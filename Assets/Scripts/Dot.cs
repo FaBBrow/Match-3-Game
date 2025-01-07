@@ -58,17 +58,24 @@ public class Dot : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (Board.instance.CurrentState==GameState.move)
+        {
+            firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Debug.Log(firstTouchPosition);
+        }
        
-        firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Debug.Log(firstTouchPosition);
         
     }
 
     private void OnMouseUp()
     {
-        finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Debug.Log(finalTouchPosition);
-        calculateAngle();
+        if (Board.instance.CurrentState==GameState.move)
+        {
+            finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Debug.Log(finalTouchPosition);
+            calculateAngle();
+
+        }
         
     }
 
@@ -80,6 +87,11 @@ public class Dot : MonoBehaviour
                 finalTouchPosition.x - firstTouchPosition.x)*(180/Mathf.PI);
             Debug.Log(swipdeAngel);
             movePieces();
+            Board.instance.CurrentState = GameState.wait;
+        }
+        else
+        {
+            Board.instance.CurrentState = GameState.move;
         }
         
         
@@ -134,6 +146,8 @@ public class Dot : MonoBehaviour
         if (Mathf.Abs(Targetx-transform.position.x)>.1f)
         {
             tempPosiiton = new Vector2(Targetx, transform.position.y);
+            
+          
             transform.DOMove(tempPosiiton, 1);
             
             if (Board.instance.allDots[collumn-boardOffsetX,row-boardOffsetY]!=this.gameObject)
@@ -152,6 +166,7 @@ public class Dot : MonoBehaviour
         if (Mathf.Abs(Targety-transform.position.y)>.1f)
         {
             tempPosiiton = new Vector2(transform.position.x, Targety);
+           
             transform.DOMove(tempPosiiton, 1);
             if (Board.instance.allDots[collumn-boardOffsetX,row-boardOffsetY]!=this.gameObject)
             {
@@ -220,10 +235,13 @@ public class Dot : MonoBehaviour
                 otherDot.GetComponent<Dot>().row = row;
                 row = previousRow;
                 collumn = previousColumn;
+                yield return new WaitForSeconds(0.5f);
+                Board.instance.CurrentState = GameState.move;
             }
             else
             {
                 Board.instance.DestroyMatches();
+                
             }
             otherDot = null;
         }

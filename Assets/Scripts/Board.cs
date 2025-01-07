@@ -8,9 +8,13 @@ using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 using WaitForSeconds = UnityEngine.WaitForSeconds;
 
-
+public enum GameState
+{
+    wait,move
+}
 public class Board : MonoBehaviour
 {
+    public GameState CurrentState=GameState.move;
     public static Board instance;
     [SerializeField] private int _height;
     [SerializeField] private int _width;
@@ -236,5 +240,9 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             DestroyMatches();
         }
+
+        yield return new WaitForSeconds(0.5f);
+        CurrentState = GameState.move;
+
     }
 }
