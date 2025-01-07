@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -16,6 +17,7 @@ public class Dot : MonoBehaviour
     public int collumn;
     public int row;
     public bool isMatched = false;
+    public bool slideing=true;
     
     public GameObject otherDot;
     private Vector2 firstTouchPosition;
@@ -39,9 +41,12 @@ public class Dot : MonoBehaviour
 
     private void Update()
     {
+        setNewPosition();
+        
         Targetx = collumn;
         Targety = row;
-        setNewPosition();
+       
+        
         if (isMatched)
         {
             SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
@@ -87,6 +92,8 @@ public class Dot : MonoBehaviour
         if (swipdeAngel>-45&& swipdeAngel<=45&&collumn<Board.instance.width-1)
         {
             otherDot = Board.instance.allDots[collumn-(int)Board.instance.boardDotOffset.x+1, row-(int)Board.instance.boardDotOffset.y];
+            previousRow = row ;
+            previousColumn = collumn ;
             otherDot.GetComponent<Dot>().collumn-= 1;
             collumn+= 1;
 
@@ -94,6 +101,8 @@ public class Dot : MonoBehaviour
         else if (swipdeAngel>45&& swipdeAngel<=135&& row<Board.instance.height-1)
         {
             otherDot = Board.instance.allDots[collumn-(int)Board.instance.boardDotOffset.x, row-(int)Board.instance.boardDotOffset.y+1];
+            previousRow = row ;
+            previousColumn = collumn ;
             otherDot.GetComponent<Dot>().row-= 1;
             row += 1;
 
@@ -101,6 +110,8 @@ public class Dot : MonoBehaviour
         else if ((swipdeAngel>135 || swipdeAngel<=-135)&& collumn-Board.instance.boardDotOffset.x>0)
         {
             otherDot = Board.instance.allDots[collumn-(int)Board.instance.boardDotOffset.x-1, row-(int)Board.instance.boardDotOffset.y];
+            previousRow = row ;
+            previousColumn = collumn ;
             otherDot.GetComponent<Dot>().collumn += 1;
             collumn -= 1;
 
@@ -108,6 +119,8 @@ public class Dot : MonoBehaviour
         else if (swipdeAngel<-45&& swipdeAngel>=-135&& row-Board.instance.boardDotOffset.y>0)
         {
             otherDot = Board.instance.allDots[collumn-(int)Board.instance.boardDotOffset.x, row-(int)Board.instance.boardDotOffset.y-1];
+            previousRow = row ;
+            previousColumn = collumn ;
             otherDot.GetComponent<Dot>().row+= 1;
             row -= 1;
 
@@ -116,38 +129,48 @@ public class Dot : MonoBehaviour
         StartCoroutine(CheckMoveCo());
     }
 
-    public void setNewPosition()
+   public void setNewPosition()
     {
         if (Mathf.Abs(Targetx-transform.position.x)>.1f)
         {
             tempPosiiton = new Vector2(Targetx, transform.position.y);
-            transform.position = Vector2.Lerp(transform.position, tempPosiiton, .6f);
+            transform.DOMove(tempPosiiton, 1);
+            
             if (Board.instance.allDots[collumn-boardOffsetX,row-boardOffsetY]!=this.gameObject)
             {
                 Board.instance.allDots[collumn - boardOffsetX, row - boardOffsetY] = this.gameObject;
             }
         }
-        else
+        else 
         {
             tempPosiiton = new Vector2(Targetx, transform.position.y);
-            transform.position = tempPosiiton;
+            
+            transform.DOMove(tempPosiiton, 1);
            
             //gameObject.name="( " + (collumn- (int)Board.instance.boardDotOffset.x) + "," + (row- (int)Board.instance.boardDotOffset.y) + ")";
         }
         if (Mathf.Abs(Targety-transform.position.y)>.1f)
         {
             tempPosiiton = new Vector2(transform.position.x, Targety);
-            transform.position = Vector2.Lerp(transform.position, tempPosiiton, .6f);
+            transform.DOMove(tempPosiiton, 1);
             if (Board.instance.allDots[collumn-boardOffsetX,row-boardOffsetY]!=this.gameObject)
             {
                 Board.instance.allDots[collumn - boardOffsetX, row - boardOffsetY] = this.gameObject;
             }
         }
-        else
+        else 
         {
             tempPosiiton = new Vector2(transform.position.x, Targety);
-            transform.position = tempPosiiton;
+            transform.DOMove(tempPosiiton, 1);
+        }
+        {
+           
             
+        }
+        if (Targety>5)
+        {
+            Targety -= 11;
+            row -= 11;
         }
         
     }

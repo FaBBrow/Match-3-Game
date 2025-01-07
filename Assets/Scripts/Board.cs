@@ -3,20 +3,24 @@ using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using System.Collections.Generic;
+using DG.Tweening;
 using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 using WaitForSeconds = UnityEngine.WaitForSeconds;
+
 
 public class Board : MonoBehaviour
 {
     public static Board instance;
     [SerializeField] private int _height;
     [SerializeField] private int _width;
+    [SerializeField] private int offset;
     [SerializeField] private GameObject tilePrefab;
+    
     private BackgroundTile[,] allTiles;
     [SerializeField] private List<GameObject> Dots;
     [SerializeField] private Vector3 cellGap;
-    public GameObject[,] allDots;
+    [SerializeField]public GameObject[,] allDots;
     [SerializeField] public Vector2 boardDotOffset;
 
     public Board(int height, int width)
@@ -57,9 +61,12 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
+                Vector2 startPosition = new Vector2(i - width / 2, j - height / 2 + offset);
                 Vector2 tempPosition = new Vector2(i - width / 2, j - height / 2);
+                
                 GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, quaternion.identity);
                 backgroundTile.transform.SetParent(this.transform);
+                
                 backgroundTile.name = "( " + i + "," + j + ")";
                 int dotToUseInt = Random.Range(0, Dots.Count);
                 int maxiterations = 0;
@@ -72,14 +79,24 @@ public class Board : MonoBehaviour
                 maxiterations = 0;
                 GameObject dot = Instantiate(Dots[dotToUseInt], tempPosition, quaternion.identity);
                 dot.transform.localScale = dot.transform.localScale - cellGap;
+                
+                dot.GetComponent<Dot>().row = j - (int)boardDotOffset.y;
+                dot.GetComponent<Dot>().collumn = i - (int)boardDotOffset.x;
                 dot.name = "( " + i + "," + j + ")";
+                
+                
+                
                 dot.transform.SetParent(this.transform);
+                
                 allDots[i, j] = dot;
             }
         }
     }
 
-
+    public void slidefalser(GameObject dot)
+    {
+        dot.GetComponent<Dot>().slideing = false;
+    }
     public bool MatchesAt(int collumn, int row, GameObject piece)
     {
         if (collumn > 1 && row > 1)
@@ -174,10 +191,17 @@ public class Board : MonoBehaviour
             {
                 if (allDots[i, j] == null)
                 {
-                    Vector2 tempPosition = new Vector2(i - width / 2, j - height / 2);
+                    Vector2 tempPosition = new Vector2(i - width / 2, j - height / 2+offset);
                     int dotToUse = Random.Range(0, Dots.Count);
                     GameObject piece = Instantiate(Dots[dotToUse], tempPosition, quaternion.identity);
+                    
+                    
+                    piece.GetComponent<Dot>().row = j - (int)boardDotOffset.y;
+                    piece.GetComponent<Dot>().collumn = i - (int)boardDotOffset.x;
                     allDots[i, j] = piece;
+                    
+                    
+
                 }
             }
         }
