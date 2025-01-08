@@ -141,6 +141,7 @@ public class Board : MonoBehaviour
     {
         if (allDots[collumn, row].GetComponent<Dot>().isMatched)
         {
+            FindMatches.instance.CurrentMatches.Remove(allDots[collumn,row]);
             Destroy(allDots[collumn, row]);
             allDots[collumn, row] = null;
         }

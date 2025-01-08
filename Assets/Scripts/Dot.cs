@@ -52,7 +52,7 @@ public class Dot : MonoBehaviour
             SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
             mySprite.color = new Color(0, 0, 0, .2f);
         }
-        FindMatchs();
+        //FindMatchs();
         
     }
 
@@ -154,7 +154,9 @@ public class Dot : MonoBehaviour
             {
                 Board.instance.allDots[collumn - boardOffsetX, row - boardOffsetY] = this.gameObject;
             }
+            FindMatches.instance.findAllMatches();
         }
+       
         else 
         {
             tempPosiiton = new Vector2(Targetx, transform.position.y);
@@ -172,6 +174,7 @@ public class Dot : MonoBehaviour
             {
                 Board.instance.allDots[collumn - boardOffsetX, row - boardOffsetY] = this.gameObject;
             }
+            FindMatches.instance.findAllMatches();
         }
         else 
         {

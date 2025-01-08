@@ -146,6 +146,7 @@ MonoBehaviour:
   collumn: 0
   row: 0
   isMatched: 0
+  slideing: 0
   otherDot: {fileID: 0}
   swipdeAngel: 0
   swipeResist: 1
