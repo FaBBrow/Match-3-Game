@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using DG.Tweening;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using Random = UnityEngine.Random;
 using WaitForSeconds = UnityEngine.WaitForSeconds;
 
@@ -20,6 +21,7 @@ public class Board : MonoBehaviour
     [SerializeField] private int _width;
     [SerializeField] private int offset;
     [SerializeField] private GameObject tilePrefab;
+    [SerializeField] private GameObject destroyEffect;
     
     private BackgroundTile[,] allTiles;
     [SerializeField] private List<GameObject> Dots;
@@ -142,6 +144,10 @@ public class Board : MonoBehaviour
         if (allDots[collumn, row].GetComponent<Dot>().isMatched)
         {
             FindMatches.instance.CurrentMatches.Remove(allDots[collumn,row]);
+            Vector2 dotPosition = new Vector2(Mathf.Round(allDots[collumn, row].transform.position.x),
+                Mathf.Round(allDots[collumn, row].transform.position.y));
+            GameObject particle= Instantiate(destroyEffect, dotPosition, Quaternion.identity);
+            Destroy(particle,0.5f);
             Destroy(allDots[collumn, row]);
             allDots[collumn, row] = null;
         }
