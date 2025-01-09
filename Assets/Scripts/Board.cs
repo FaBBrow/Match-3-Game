@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using DG.Tweening;
 using Unity.VisualScripting;
-using UnityEditor.Rendering;
+
 using Random = UnityEngine.Random;
 using WaitForSeconds = UnityEngine.WaitForSeconds;
 
@@ -87,7 +87,7 @@ public class Board : MonoBehaviour
                 dot.transform.localScale = dot.transform.localScale - cellGap;
                 
                 dot.GetComponent<Dot>().row = j - (int)boardDotOffset.y;
-                dot.GetComponent<Dot>().collumn = i - (int)boardDotOffset.x;
+                dot.GetComponent<Dot>().column = i - (int)boardDotOffset.x;
                 dot.name = "( " + i + "," + j + ")";
                 
                 
@@ -103,33 +103,33 @@ public class Board : MonoBehaviour
     {
         dot.GetComponent<Dot>().slideing = false;
     }
-    public bool MatchesAt(int collumn, int row, GameObject piece)
+    public bool MatchesAt(int column, int row, GameObject piece)
     {
-        if (collumn > 1 && row > 1)
+        if (column > 1 && row > 1)
         {
-            if (allDots[collumn - 1, row].tag == piece.tag && allDots[collumn - 2, row].tag == piece.tag)
+            if (allDots[column - 1, row].tag == piece.tag && allDots[column - 2, row].tag == piece.tag)
             {
                 return true;
             }
 
-            if (allDots[collumn, row - 1].tag == piece.tag && allDots[collumn, row - 2].tag == piece.tag)
+            if (allDots[column, row - 1].tag == piece.tag && allDots[column, row - 2].tag == piece.tag)
             {
                 return true;
             }
         }
-        else if (collumn <= 1 || row <= 1)
+        else if (column <= 1 || row <= 1)
         {
             if (row > 1)
             {
-                if (allDots[collumn, row - 1].tag == piece.tag && allDots[collumn, row - 2].tag == piece.tag)
+                if (allDots[column, row - 1].tag == piece.tag && allDots[column, row - 2].tag == piece.tag)
                 {
                     return true;
                 }
             }
 
-            if (collumn > 1)
+            if (column > 1)
             {
-                if (allDots[collumn - 1, row].tag == piece.tag && allDots[collumn - 2, row].tag == piece.tag)
+                if (allDots[column - 1, row].tag == piece.tag && allDots[column - 2, row].tag == piece.tag)
                 {
                     return true;
                 }
@@ -139,17 +139,17 @@ public class Board : MonoBehaviour
         return false;
     }
 
-    public void DestroyMatchesAt(int collumn, int row)
+    public void DestroyMatchesAt(int column, int row)
     {
-        if (allDots[collumn, row].GetComponent<Dot>().isMatched)
+        if (allDots[column, row].GetComponent<Dot>().isMatched)
         {
-            FindMatches.instance.CurrentMatches.Remove(allDots[collumn,row]);
-            Vector2 dotPosition = new Vector2(Mathf.Round(allDots[collumn, row].transform.position.x),
-                Mathf.Round(allDots[collumn, row].transform.position.y));
+            FindMatches.instance.CurrentMatches.Remove(allDots[column,row]);
+            Vector2 dotPosition = new Vector2(Mathf.Round(allDots[column, row].transform.position.x),
+                Mathf.Round(allDots[column, row].transform.position.y));
             GameObject particle= Instantiate(destroyEffect, dotPosition, Quaternion.identity);
             Destroy(particle,0.5f);
-            Destroy(allDots[collumn, row]);
-            allDots[collumn, row] = null;
+            Destroy(allDots[column, row]);
+            allDots[column, row] = null;
         }
     }
 
@@ -208,7 +208,7 @@ public class Board : MonoBehaviour
                     
                     
                     piece.GetComponent<Dot>().row = j - (int)boardDotOffset.y;
-                    piece.GetComponent<Dot>().collumn = i - (int)boardDotOffset.x;
+                    piece.GetComponent<Dot>().column = i - (int)boardDotOffset.x;
                     allDots[i, j] = piece;
                     
                     
