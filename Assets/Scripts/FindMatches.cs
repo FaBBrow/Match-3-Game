@@ -19,6 +19,10 @@ public class FindMatches : MonoBehaviour
         StartCoroutine(FindAllMatchesCo());
     }
 
+    public void findBombs()
+    {
+        //StartCoroutine(Bombs());
+    }
 
     private IEnumerator FindAllMatchesCo()
     {
@@ -119,21 +123,27 @@ public class FindMatches : MonoBehaviour
         }
     }
 
-    private List<GameObject> getColumnPieces(int column)
+    
+
+    public List<GameObject> getColumnPieces(int column)
     {
         List<GameObject> dots = new List<GameObject>();
         for (int i = 0; i < Board.instance.height; i++)
         {
             if (Board.instance.allDots[column,i]!=null)
             {
+                Debug.Log("çalısıyor");
                 dots.Add(Board.instance.allDots[column,i]);
+                CurrentMatches.Add(Board.instance.allDots[column,i]);
                 Board.instance.allDots[column, i].GetComponent<Dot>().isMatched = true;
             }
         }
+        
+        CurrentMatches.Clear();
         return dots;
         
     }
-    private List<GameObject> getRowPieces(int row)
+    public List<GameObject> getRowPieces(int row)
     {
         List<GameObject> dots = new List<GameObject>();
         for (int i = 0; i < Board.instance.width; i++)
@@ -141,10 +151,67 @@ public class FindMatches : MonoBehaviour
             if (Board.instance.allDots[i,row]!=null)
             {
                 dots.Add(Board.instance.allDots[i,row]);
+                CurrentMatches.Add(Board.instance.allDots[i,row]);
                 Board.instance.allDots[i, row].GetComponent<Dot>().isMatched = true;
             }
         }
+        CurrentMatches.Clear();
         return dots;
         
+    }
+
+    public void checkBombs()
+    {
+        if (Board.instance.CurrentDot!=null)
+        {
+            if (Board.instance.CurrentDot.isMatched)
+            {
+                Dot currentdot = Board.instance.CurrentDot;
+                Board.instance.CurrentDot.isMatched = false;
+                /*int typeOfBomb = Random.Range(0, 100);
+                if (typeOfBomb<50)
+                {
+                    Board.instance.CurrentDot.makeRowBomb();
+                }
+                else
+                {
+                    Board.instance.CurrentDot.makeColumnBomb();
+                }*/
+                if ((currentdot.swipdeAngel>-45&& currentdot.swipdeAngel<=45)|| currentdot.swipdeAngel<-135&& currentdot.swipdeAngel>=135)
+                {
+                    currentdot.makeRowBomb();
+                }
+                else
+                {
+                    currentdot.makeColumnBomb();
+                }
+            }
+            else if (Board.instance.CurrentDot.otherDot!=null)
+            {
+                Dot otherDot = Board.instance.CurrentDot.otherDot.GetComponent<Dot>();
+                if (otherDot.isMatched)
+                {
+                    otherDot.isMatched = false;
+                   /* int typeOfBomb = Random.Range(0, 100);
+                    if (typeOfBomb<50)
+                    {
+                        otherDot.makeRowBomb();
+                    }
+                    else
+                    {
+                        otherDot.makeColumnBomb();
+                    }*/
+                   Dot currentdot = Board.instance.CurrentDot.GetComponent<Dot>();
+                   if ((currentdot.swipdeAngel>-45&& currentdot.swipdeAngel<=45)|| currentdot.swipdeAngel<-135&& currentdot.swipdeAngel>=135)
+                   {
+                       otherDot.makeRowBomb();
+                   }
+                   else
+                   {
+                       otherDot.makeColumnBomb();
+                   }
+                }
+            }
+        }
     }
 }

@@ -473,6 +473,7 @@ MonoBehaviour:
   - {fileID: 421075326220448667, guid: 6e15c68ea26dc0847b118fd2f08e388e, type: 3}
   cellGap: {x: 0.1, y: 0.1, z: 0}
   boardDotOffset: {x: 0, y: 0}
+  CurrentDot: {fileID: 0}
 --- !u!4 &1453736297
 Transform:
   m_ObjectHideFlags: 0

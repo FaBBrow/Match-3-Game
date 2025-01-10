@@ -28,6 +28,7 @@ public class Board : MonoBehaviour
     [SerializeField] private Vector3 cellGap;
     [SerializeField]public GameObject[,] allDots;
     [SerializeField] public Vector2 boardDotOffset;
+    public Dot CurrentDot;
 
     public Board(int height, int width)
     {
@@ -143,6 +144,10 @@ public class Board : MonoBehaviour
     {
         if (allDots[column, row].GetComponent<Dot>().isMatched)
         {
+            if (FindMatches.instance.CurrentMatches.Count==4)
+            {
+                FindMatches.instance.checkBombs();
+            }
             FindMatches.instance.CurrentMatches.Remove(allDots[column,row]);
             Vector2 dotPosition = new Vector2(Mathf.Round(allDots[column, row].transform.position.x),
                 Mathf.Round(allDots[column, row].transform.position.y));
@@ -247,7 +252,8 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             DestroyMatches();
         }
-
+        FindMatches.instance.CurrentMatches.Clear();
+        CurrentDot = null;
         yield return new WaitForSeconds(0.5f);
         CurrentState = GameState.move;
 

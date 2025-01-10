@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using DG.Tweening;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -25,6 +26,7 @@ public class Dot : MonoBehaviour
     private Vector2 tempPosiiton;
     public float swipdeAngel=0;
     public float swipeResist = .5f;
+    
 
     public bool isCollumnBomb;
     public bool isRowBomb;
@@ -52,11 +54,11 @@ public class Dot : MonoBehaviour
         Targety = row;
        
         
-        if (isMatched)
+       /*" if (isMatched)
         {
             SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
             mySprite.color = new Color(0, 0, 0, .2f);
-        }
+        }*/
         //FindMatchs();
         
     }
@@ -93,10 +95,20 @@ public class Dot : MonoBehaviour
             Debug.Log(swipdeAngel);
             movePieces();
             Board.instance.CurrentState = GameState.wait;
+            Board.instance.CurrentDot = this;
+            if (isRowBomb)
+            {
+                FindMatches.instance.getRowPieces(row - boardOffsetY);
+            }
+            else if (isCollumnBomb)
+            {
+                FindMatches.instance.getColumnPieces(column - boardOffsetX);
+            }
         }
         else
         {
             Board.instance.CurrentState = GameState.move;
+            
         }
         
         
@@ -234,16 +246,18 @@ public class Dot : MonoBehaviour
 
     public IEnumerator CheckMoveCo()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         if (otherDot!=null)
         {
-            if (!isMatched&& !otherDot.GetComponent<Dot>().isMatched)
+          
+             if (!isMatched&& !otherDot.GetComponent<Dot>().isMatched)
             {
                 otherDot.GetComponent<Dot>().column = column;
                 otherDot.GetComponent<Dot>().row = row;
                 row = previousRow;
                 column = previousColumn;
                 yield return new WaitForSeconds(0.5f);
+                Board.instance.CurrentDot = null;
                 Board.instance.CurrentState = GameState.move;
             }
             else
@@ -251,10 +265,24 @@ public class Dot : MonoBehaviour
                 Board.instance.DestroyMatches();
                 
             }
-            otherDot = null;
+            // otherDot = null;
         }
        
 
+    }
+
+    public void makeRowBomb()
+    {
+        isRowBomb = true;
+        GameObject arrow = Instantiate(rowArrow, transform.position, quaternion.identity);
+        arrow.transform.parent = this.transform;
+    }
+
+    public void makeColumnBomb()
+    {
+        isCollumnBomb = true;
+        GameObject arrow = Instantiate(collumnArrow, transform.position, quaternion.identity);
+        arrow.transform.parent = this.transform;
     }
 }
 
