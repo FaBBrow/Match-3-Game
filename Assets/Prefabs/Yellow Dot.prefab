@@ -150,7 +150,9 @@ MonoBehaviour:
   otherDot: {fileID: 0}
   swipdeAngel: 0
   swipeResist: 1
+  isColorBomb: 0
   isCollumnBomb: 0
   isRowBomb: 0
   rowArrow: {fileID: 586642022238393575, guid: 791ef988f91419349be32c196c033ba1, type: 3}
   collumnArrow: {fileID: 4021906668098377202, guid: fbe728ba1f0bd944996f59d118fe45b9, type: 3}
+  colorBomb: {fileID: 2417620842142871896, guid: 639e5a0e25331f3449f3b3cee298e2ef, type: 3}

@@ -26,12 +26,13 @@ public class Dot : MonoBehaviour
     private Vector2 tempPosiiton;
     public float swipdeAngel=0;
     public float swipeResist = .5f;
-    
 
+    public bool isColorBomb;
     public bool isCollumnBomb;
     public bool isRowBomb;
     [SerializeField] private GameObject rowArrow;
     [SerializeField] private GameObject collumnArrow;
+    [SerializeField] private GameObject colorBomb;
     
     private void Start()
     {
@@ -103,6 +104,11 @@ public class Dot : MonoBehaviour
             else if (isCollumnBomb)
             {
                 FindMatches.instance.getColumnPieces(column - boardOffsetX);
+            }
+
+            if (isColorBomb)
+            {
+                FindMatches.instance.GetColorPieces(otherDot.GetComponent<SpriteRenderer>(),this.gameObject);
             }
         }
         else
@@ -283,6 +289,13 @@ public class Dot : MonoBehaviour
         isCollumnBomb = true;
         GameObject arrow = Instantiate(collumnArrow, transform.position, quaternion.identity);
         arrow.transform.parent = this.transform;
+    }
+
+    public void makeColorBomb()
+    {
+        isColorBomb = true;
+        GameObject bomb = Instantiate(colorBomb, transform.position, quaternion.identity);
+        bomb.transform.parent = this.transform;
     }
 }
 

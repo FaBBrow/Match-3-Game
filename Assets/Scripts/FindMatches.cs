@@ -160,6 +160,24 @@ public class FindMatches : MonoBehaviour
         
     }
 
+    public void GetColorPieces(SpriteRenderer sprite1,GameObject sprited)
+    {
+        for (int i = 0; i < Board.instance.width; i++)
+        {
+            for (int j = 0; j < Board.instance.height; j++)
+            {
+                if (Board.instance.allDots[i,j].GetComponent<SpriteRenderer>().color==sprite1.color&& Board.instance.allDots[i,j]!=null)
+                {
+                    CurrentMatches.Add(Board.instance.allDots[i,j]);
+                    Board.instance.allDots[i, j].GetComponent<Dot>().isMatched = true;
+                }
+            }
+        }
+        CurrentMatches.Add(sprited);
+        sprited.GetComponent<Dot>().isMatched = true;
+        CurrentMatches.Clear();
+    }
+
     public void checkBombs()
     {
         if (Board.instance.CurrentDot!=null)
@@ -210,6 +228,37 @@ public class FindMatches : MonoBehaviour
                    {
                        otherDot.makeColumnBomb();
                    }
+                }
+            }
+        }
+    }
+    public void checkColorBombs()
+    {
+        if (Board.instance.CurrentDot!=null)
+        {
+            if (Board.instance.CurrentDot.isMatched)
+            {
+                Dot currentdot = Board.instance.CurrentDot;
+                Board.instance.CurrentDot.isMatched = false;
+                currentdot.makeColorBomb();
+            }
+            else if (Board.instance.CurrentDot.otherDot!=null)
+            {
+                Dot otherDot = Board.instance.CurrentDot.otherDot.GetComponent<Dot>();
+                if (otherDot.isMatched)
+                {
+                    otherDot.isMatched = false;
+                    /* int typeOfBomb = Random.Range(0, 100);
+                     if (typeOfBomb<50)
+                     {
+                         otherDot.makeRowBomb();
+                     }
+                     else
+                     {
+                         otherDot.makeColumnBomb();
+                     }*/
+                    Dot currentdot = Board.instance.CurrentDot.GetComponent<Dot>();
+                   otherDot.makeColorBomb();
                 }
             }
         }

@@ -148,6 +148,11 @@ public class Board : MonoBehaviour
             {
                 FindMatches.instance.checkBombs();
             }
+
+            if (FindMatches.instance.CurrentMatches.Count == 5)
+            {
+                FindMatches.instance.checkColorBombs();
+            }
             FindMatches.instance.CurrentMatches.Remove(allDots[column,row]);
             Vector2 dotPosition = new Vector2(Mathf.Round(allDots[column, row].transform.position.x),
                 Mathf.Round(allDots[column, row].transform.position.y));
