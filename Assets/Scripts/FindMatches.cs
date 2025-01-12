@@ -19,10 +19,7 @@ public class FindMatches : MonoBehaviour
         StartCoroutine(FindAllMatchesCo());
     }
 
-    public void findBombs()
-    {
-        //StartCoroutine(Bombs());
-    }
+   
 
     private IEnumerator FindAllMatchesCo()
     {
@@ -31,90 +28,62 @@ public class FindMatches : MonoBehaviour
         {
             for (int j = 0; j < Board.instance.height; j++)
             {
-                GameObject currentDot = Board.instance.allDots[i, j];
+                Dot currentDot = Board.instance.allDots[i, j] != null ? Board.instance.allDots[i, j].GetComponent<Dot>() : null;
+
                 if (currentDot!=null)
                 {
                     if (i>0&& i<Board.instance.width-1)
                     {
-                        GameObject leftDot = Board.instance.allDots[i - 1, j];
-                        GameObject rightDot = Board.instance.allDots[i + 1, j];
+                        Dot leftDot = Board.instance.allDots[i - 1, j] != null ? Board.instance.allDots[i - 1, j].GetComponent<Dot>() : null;
+
+                        Dot rightDot = Board.instance.allDots[i + 1, j] != null ? Board.instance.allDots[i + 1, j].GetComponent<Dot>() : null;
+
                         if (leftDot!=null&& rightDot!=null)
                         {
                             if (leftDot.tag==currentDot.tag&& rightDot.tag==currentDot.tag)
                             {
-                                if (currentDot.GetComponent<Dot>().isRowBomb|| leftDot.GetComponent<Dot>().isRowBomb|| rightDot.GetComponent<Dot>().isRowBomb)
+                            
+                                if (!CurrentMatches.Contains(leftDot.gameObject))
                                 {
-                                    CurrentMatches.Union(getRowPieces(j));
+                                    CurrentMatches.Add(leftDot.gameObject);
                                 }
-
-                                if (currentDot.GetComponent<Dot>().isCollumnBomb)
+                                leftDot.isMatched = true;
+                                if (!CurrentMatches.Contains(currentDot.gameObject))
                                 {
-                                    CurrentMatches.Union(getColumnPieces(i));
+                                    CurrentMatches.Add(currentDot.gameObject);
                                 }
-                                if (leftDot.GetComponent<Dot>().isCollumnBomb)
+                                currentDot.isMatched = true;
+                                if (!CurrentMatches.Contains(rightDot.gameObject))
                                 {
-                                    CurrentMatches.Union(getColumnPieces(i-1));
+                                    CurrentMatches.Add(rightDot.gameObject);
                                 }
-                                if (rightDot.GetComponent<Dot>().isCollumnBomb)
-                                {
-                                    CurrentMatches.Union(getColumnPieces(i+1));
-                                }
-                                
-                                if (!CurrentMatches.Contains(leftDot))
-                                {
-                                    CurrentMatches.Add(leftDot);
-                                }
-                                leftDot.GetComponent<Dot>().isMatched = true;
-                                if (!CurrentMatches.Contains(currentDot))
-                                {
-                                    CurrentMatches.Add(currentDot);
-                                }
-                                currentDot.GetComponent<Dot>().isMatched = true;
-                                if (!CurrentMatches.Contains(rightDot))
-                                {
-                                    CurrentMatches.Add(rightDot);
-                                }
-                                rightDot.GetComponent<Dot>().isMatched = true;
+                                rightDot.isMatched = true;
                             }
                         }
                     }
                     if (j>0&& j<Board.instance.height-1)
                     {
-                        GameObject upperDot = Board.instance.allDots[i , j+1];
-                        GameObject downDot = Board.instance.allDots[i , j-1];
+                        Dot upperDot = Board.instance.allDots[i, j + 1] != null ? Board.instance.allDots[i, j + 1].GetComponent<Dot>() : null;
+                        Dot downDot = Board.instance.allDots[i, j - 1] != null ? Board.instance.allDots[i, j - 1].GetComponent<Dot>() : null;
+
                         if (upperDot!=null&& downDot!=null)
                         {
                             
                             if (upperDot.tag==currentDot.tag&& downDot.tag==currentDot.tag)
                             {
-                                if (currentDot.GetComponent<Dot>().isCollumnBomb|| upperDot.GetComponent<Dot>().isCollumnBomb|| downDot.GetComponent<Dot>().isCollumnBomb)
+                             
+                                if (!CurrentMatches.Contains(upperDot.gameObject))
                                 {
-                                    CurrentMatches.Union(getColumnPieces(i));
-                                }
-                                if (currentDot.GetComponent<Dot>().isRowBomb)
+                                    CurrentMatches.Add(upperDot.gameObject);
+                                }upperDot.isMatched = true;
+                                if (!CurrentMatches.Contains(currentDot.gameObject))
                                 {
-                                    CurrentMatches.Union(getRowPieces(j));
-                                }
-                                if (upperDot.GetComponent<Dot>().isRowBomb)
+                                    CurrentMatches.Add(currentDot.gameObject);
+                                }currentDot.isMatched = true;
+                                if (!CurrentMatches.Contains(downDot.gameObject))
                                 {
-                                    CurrentMatches.Union(getRowPieces(j+1));
-                                }
-                                if (downDot.GetComponent<Dot>().isRowBomb)
-                                {
-                                    CurrentMatches.Union(getRowPieces(j-1));
-                                }
-                                if (!CurrentMatches.Contains(upperDot))
-                                {
-                                    CurrentMatches.Add(upperDot);
-                                }upperDot.GetComponent<Dot>().isMatched = true;
-                                if (!CurrentMatches.Contains(currentDot))
-                                {
-                                    CurrentMatches.Add(currentDot);
-                                }currentDot.GetComponent<Dot>().isMatched = true;
-                                if (!CurrentMatches.Contains(downDot))
-                                {
-                                    CurrentMatches.Add(downDot);
-                                }downDot.GetComponent<Dot>().isMatched = true;
+                                    CurrentMatches.Add(downDot.gameObject);
+                                }downDot.isMatched = true;
                             }
                         }
                     }
@@ -150,7 +119,7 @@ public class FindMatches : MonoBehaviour
         {
             if (Board.instance.allDots[i,row]!=null)
             {
-                dots.Add(Board.instance.allDots[i,row]);
+               // dots.Add(Board.instance.allDots[i,row]);
                 CurrentMatches.Add(Board.instance.allDots[i,row]);
                 Board.instance.allDots[i, row].GetComponent<Dot>().isMatched = true;
             }
@@ -180,21 +149,18 @@ public class FindMatches : MonoBehaviour
 
     public void checkBombs()
     {
-        if (Board.instance.CurrentDot!=null)
+        Dot currentdot = Board.instance.CurrentDot != null ? Board.instance.CurrentDot.GetComponent<Dot>() : null;
+        Dot otherDot = Board.instance.CurrentDot != null && Board.instance.CurrentDot.otherDot != null 
+            ? Board.instance.CurrentDot.otherDot.GetComponent<Dot>() 
+            : null;
+
+        if (currentdot!=null)
         {
-            if (Board.instance.CurrentDot.isMatched)
+            if (currentdot.isMatched)
             {
-                Dot currentdot = Board.instance.CurrentDot;
-                Board.instance.CurrentDot.isMatched = false;
-                /*int typeOfBomb = Random.Range(0, 100);
-                if (typeOfBomb<50)
-                {
-                    Board.instance.CurrentDot.makeRowBomb();
-                }
-                else
-                {
-                    Board.instance.CurrentDot.makeColumnBomb();
-                }*/
+               
+                currentdot.isMatched = false;
+          
                 if ((currentdot.swipdeAngel>-45&& currentdot.swipdeAngel<=45)|| currentdot.swipdeAngel<-135&& currentdot.swipdeAngel>=135)
                 {
                     currentdot.makeRowBomb();
@@ -204,22 +170,14 @@ public class FindMatches : MonoBehaviour
                     currentdot.makeColumnBomb();
                 }
             }
-            else if (Board.instance.CurrentDot.otherDot!=null)
+            else if (otherDot!=null)
             {
-                Dot otherDot = Board.instance.CurrentDot.otherDot.GetComponent<Dot>();
+                
                 if (otherDot.isMatched)
                 {
                     otherDot.isMatched = false;
-                   /* int typeOfBomb = Random.Range(0, 100);
-                    if (typeOfBomb<50)
-                    {
-                        otherDot.makeRowBomb();
-                    }
-                    else
-                    {
-                        otherDot.makeColumnBomb();
-                    }*/
-                   Dot currentdot = Board.instance.CurrentDot.GetComponent<Dot>();
+                   
+                   
                    if ((currentdot.swipdeAngel>-45&& currentdot.swipdeAngel<=45)|| currentdot.swipdeAngel<-135&& currentdot.swipdeAngel>=135)
                    {
                        otherDot.makeRowBomb();
@@ -234,30 +192,26 @@ public class FindMatches : MonoBehaviour
     }
     public void checkColorBombs()
     {
-        if (Board.instance.CurrentDot!=null)
+        Dot currentdot = Board.instance.CurrentDot != null ? Board.instance.CurrentDot.GetComponent<Dot>() : null;
+        Dot otherDot = Board.instance.CurrentDot != null && Board.instance.CurrentDot.otherDot != null 
+            ? Board.instance.CurrentDot.otherDot.GetComponent<Dot>() 
+            : null;
+
+        if (currentdot!=null)
         {
-            if (Board.instance.CurrentDot.isMatched)
+            if (currentdot.isMatched)
             {
-                Dot currentdot = Board.instance.CurrentDot;
-                Board.instance.CurrentDot.isMatched = false;
+               
+                currentdot.isMatched = false;
                 currentdot.makeColorBomb();
             }
-            else if (Board.instance.CurrentDot.otherDot!=null)
+            else if (otherDot!=null)
             {
-                Dot otherDot = Board.instance.CurrentDot.otherDot.GetComponent<Dot>();
+               
                 if (otherDot.isMatched)
                 {
                     otherDot.isMatched = false;
-                    /* int typeOfBomb = Random.Range(0, 100);
-                     if (typeOfBomb<50)
-                     {
-                         otherDot.makeRowBomb();
-                     }
-                     else
-                     {
-                         otherDot.makeColumnBomb();
-                     }*/
-                    Dot currentdot = Board.instance.CurrentDot.GetComponent<Dot>();
+                  
                    otherDot.makeColorBomb();
                 }
             }

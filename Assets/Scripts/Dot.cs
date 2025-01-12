@@ -216,39 +216,7 @@ public class Dot : MonoBehaviour
         
     }
 
-    public void FindMatchs()
-    {
-        if (column-boardOffsetX>0&& column-boardOffsetX<Board.instance.width-1)
-        {
-            GameObject leftDot1 = Board.instance.allDots[column - boardOffsetX - 1, row - boardOffsetY];
-            GameObject rightDot1 = Board.instance.allDots[column - boardOffsetX + 1, row - boardOffsetY];
-            if (leftDot1!=null&& rightDot1!=null)
-            {
-                if (leftDot1.tag==this.gameObject.tag&& rightDot1.tag==this.gameObject.tag&& leftDot1.tag==rightDot1.tag)
-                {
-                    leftDot1.GetComponent<Dot>().isMatched = true;
-                    rightDot1.GetComponent<Dot>().isMatched = true;
-                    isMatched = true;
-                }
-            }
-            
-        }
-        if (row-boardOffsetY>0&& row-boardOffsetY<Board.instance.height-1)
-        {
-            GameObject upDot1 = Board.instance.allDots[column - boardOffsetX , row - boardOffsetY+1];
-            GameObject downDot1 = Board.instance.allDots[column - boardOffsetX , row - boardOffsetY-1];
-            if (upDot1!=null&& downDot1!=null)
-            {
-                if (upDot1.tag==this.gameObject.tag&& downDot1.tag==this.gameObject.tag&& upDot1.tag==downDot1.tag)
-                {
-                    upDot1.GetComponent<Dot>().isMatched = true;
-                    downDot1.GetComponent<Dot>().isMatched = true;
-                    isMatched = true;
-                }
-            }
-            
-        } 
-    }
+
 
     public IEnumerator CheckMoveCo()
     {
