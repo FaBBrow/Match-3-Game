@@ -30,10 +30,11 @@ public class Dot : MonoBehaviour
     public bool isColorBomb;
     public bool isCollumnBomb;
     public bool isRowBomb;
+    public bool isAdjacentBomb;
     [SerializeField] private GameObject rowArrow;
     [SerializeField] private GameObject collumnArrow;
     [SerializeField] private GameObject colorBomb;
-    
+    [SerializeField] private GameObject adjacentBomb;
     private void Start()
     {
         boardOffsetX = (int)Board.instance.boardDotOffset.x;
@@ -109,6 +110,11 @@ public class Dot : MonoBehaviour
             if (isColorBomb)
             {
                 FindMatches.instance.GetColorPieces(otherDot.GetComponent<SpriteRenderer>(),this.gameObject);
+            }
+
+            if (isAdjacentBomb)
+            {
+                FindMatches.instance.getAdjacentPieces(column-boardOffsetX,row-boardOffsetY);
             }
         }
         else
@@ -264,6 +270,13 @@ public class Dot : MonoBehaviour
         isColorBomb = true;
         GameObject bomb = Instantiate(colorBomb, transform.position, quaternion.identity);
         bomb.transform.parent = this.transform;
+    }
+
+    public void makeAdjacentBomb()
+    {
+        isAdjacentBomb = true;
+        GameObject adjacent = Instantiate(adjacentBomb, transform.position, quaternion.identity);
+        adjacent.transform.parent = this.transform;
     }
 }
 

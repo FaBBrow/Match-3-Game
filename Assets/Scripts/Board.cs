@@ -140,6 +140,31 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    private bool columnOrRow()
+    {
+        int numberHorizontal = 0;
+        int numberVertical = 0;
+        Dot firstPiece = FindMatches.instance.CurrentMatches[0].GetComponent<Dot>();
+        if (firstPiece!=null)
+        {
+            foreach (GameObject curentpiece in FindMatches.instance.CurrentMatches)
+            {
+                Dot dot = curentpiece.GetComponent<Dot>();
+                if (dot.row==firstPiece.row)
+                {
+                    numberHorizontal++;
+                }
+
+                if (dot.column==firstPiece.column)
+                {
+                    numberVertical++;
+                }
+            }
+
+            
+        }
+        return (numberHorizontal==5|| numberVertical==5);
+    }
     public void DestroyMatchesAt(int column, int row)
     {
         if (allDots[column, row].GetComponent<Dot>().isMatched)
@@ -149,9 +174,16 @@ public class Board : MonoBehaviour
                 FindMatches.instance.checkBombs();
             }
 
-            if (FindMatches.instance.CurrentMatches.Count == 5)
+            if (FindMatches.instance.CurrentMatches.Count == 5|| FindMatches.instance.CurrentMatches.Count==8)
             {
-                FindMatches.instance.checkColorBombs();
+                if (columnOrRow())
+                {
+                    FindMatches.instance.checkColorBombs();
+                }
+                else
+                {
+                    FindMatches.instance.checkAdjacentBomb();
+                }
             }
             FindMatches.instance.CurrentMatches.Remove(allDots[column,row]);
             Vector2 dotPosition = new Vector2(Mathf.Round(allDots[column, row].transform.position.x),

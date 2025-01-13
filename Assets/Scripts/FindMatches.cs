@@ -217,4 +217,49 @@ public class FindMatches : MonoBehaviour
             }
         }
     }
+
+    public void checkAdjacentBomb()
+    {
+        
+        Dot currentdot = Board.instance.CurrentDot != null ? Board.instance.CurrentDot.GetComponent<Dot>() : null;
+        Dot otherDot = Board.instance.CurrentDot != null && Board.instance.CurrentDot.otherDot != null 
+            ? Board.instance.CurrentDot.otherDot.GetComponent<Dot>() 
+            : null;
+
+        if (currentdot!=null)
+        {
+            if (currentdot.isMatched)
+            {
+               
+                currentdot.isMatched = false;
+                currentdot.makeAdjacentBomb();
+            }
+            else if (otherDot!=null)
+            {
+               
+                if (otherDot.isMatched)
+                {
+                    otherDot.isMatched = false;
+                  
+                    otherDot.makeAdjacentBomb();
+                }
+            }
+        }
+    }
+
+    public void getAdjacentPieces(int column,int row)
+    {
+        for (int i = column - 1; i < column + 2; i++)
+        {
+            for (int j = row - 1; j < row + 2; j++)
+            {
+                if (i>=0&&i<Board.instance.width&&j>=0&& j<Board.instance.height)
+                {
+                    CurrentMatches.Add(Board.instance.allDots[i, j]);
+                    Board.instance.allDots[i, j].GetComponent<Dot>().isMatched = true;
+                }
+            }
+        }
+        CurrentMatches.Clear();
+    }
 }
