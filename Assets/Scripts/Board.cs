@@ -60,6 +60,7 @@ public class Board : MonoBehaviour
     {
         boardDotOffset = new Vector2(Mathf.RoundToInt(allDots[0, 0].transform.position.x),
             Mathf.RoundToInt(allDots[0, 0].transform.position.y));
+        offset = height + 1;
     }
 
     private void setup()

@@ -127,43 +127,49 @@ public class Dot : MonoBehaviour
         
     }
 
+    public void movePiecesActual(Vector2 direction)
+    {
+        otherDot = (column - (int)Board.instance.boardDotOffset.x + (int)direction.x >= 0 &&
+                    column - (int)Board.instance.boardDotOffset.x + (int)direction.x < Board.instance.allDots.GetLength(0) &&
+                    row - (int)Board.instance.boardDotOffset.y + (int)direction.y >= 0 &&
+                    row - (int)Board.instance.boardDotOffset.y + (int)direction.y < Board.instance.allDots.GetLength(1))
+            ? Board.instance.allDots[column - (int)Board.instance.boardDotOffset.x + (int)direction.x,
+                row - (int)Board.instance.boardDotOffset.y + (int)direction.y]
+            : null;
+
+        if (otherDot!=null)
+        {
+            previousRow = row ;
+            previousColumn = column ;
+            otherDot.GetComponent<Dot>().column+=-1* (int)direction.x;
+            otherDot.GetComponent<Dot>().row+=-1* (int)direction.y;
+            row += (int)direction.y;
+            column += (int)direction.x;
+        }
+       
+       
+    }
     
     public void movePieces()
     {
         if (swipdeAngel>-45&& swipdeAngel<=45&&column<Board.instance.width-1)
         {
-            otherDot = Board.instance.allDots[column-(int)Board.instance.boardDotOffset.x+1, row-(int)Board.instance.boardDotOffset.y];
-            previousRow = row ;
-            previousColumn = column ;
-            otherDot.GetComponent<Dot>().column-= 1;
-            column+= 1;
+            movePiecesActual(Vector2.right);
 
         }
         else if (swipdeAngel>45&& swipdeAngel<=135&& row<Board.instance.height-1)
         {
-            otherDot = Board.instance.allDots[column-(int)Board.instance.boardDotOffset.x, row-(int)Board.instance.boardDotOffset.y+1];
-            previousRow = row ;
-            previousColumn = column ;
-            otherDot.GetComponent<Dot>().row-= 1;
-            row += 1;
+            movePiecesActual(Vector2.up);
 
         }
         else if ((swipdeAngel>135 || swipdeAngel<=-135)&& column-Board.instance.boardDotOffset.x>0)
         {
-            otherDot = Board.instance.allDots[column-(int)Board.instance.boardDotOffset.x-1, row-(int)Board.instance.boardDotOffset.y];
-            previousRow = row ;
-            previousColumn = column ;
-            otherDot.GetComponent<Dot>().column += 1;
-            column -= 1;
+            movePiecesActual(Vector2.left);
 
         }
         else if (swipdeAngel<-45&& swipdeAngel>=-135&& row-Board.instance.boardDotOffset.y>0)
         {
-            otherDot = Board.instance.allDots[column-(int)Board.instance.boardDotOffset.x, row-(int)Board.instance.boardDotOffset.y-1];
-            previousRow = row ;
-            previousColumn = column ;
-            otherDot.GetComponent<Dot>().row+= 1;
-            row -= 1;
+            movePiecesActual(Vector2.down);
 
         }
 
@@ -214,10 +220,10 @@ public class Dot : MonoBehaviour
            
             
         }
-        if (Targety>5)
+        if (Targety>Board.instance.height)
         {
-            Targety -= 11;
-            row -= 11;
+            Targety -= Board.instance.height+1;
+            row -= Board.instance.height+1 ;
         }
         
     }
@@ -246,6 +252,10 @@ public class Dot : MonoBehaviour
                 
             }
             // otherDot = null;
+        }
+        else
+        {
+            Board.instance.CurrentState = GameState.move;
         }
        
 
