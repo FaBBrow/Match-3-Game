@@ -220,10 +220,10 @@ public class Dot : MonoBehaviour
            
             
         }
-        if (Targety>Board.instance.height)
+        if (Targety>Mathf.Floor(Board.instance.height/2))
         {
             Targety -= Board.instance.height+1;
-            row -= Board.instance.height+1 ;
+            row -= Board.instance.height + 1;
         }
         
     }
