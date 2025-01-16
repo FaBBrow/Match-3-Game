@@ -135,10 +135,13 @@ public class FindMatches : MonoBehaviour
         {
             for (int j = 0; j < Board.instance.height; j++)
             {
-                if (Board.instance.allDots[i,j].GetComponent<SpriteRenderer>().color==sprite1.color&& Board.instance.allDots[i,j]!=null)
+                if (Board.instance.allDots[i,j]!=null)
                 {
-                    CurrentMatches.Add(Board.instance.allDots[i,j]);
-                    Board.instance.allDots[i, j].GetComponent<Dot>().isMatched = true;
+                    if (Board.instance.allDots[i,j].GetComponent<SpriteRenderer>().color==sprite1.color)
+                    {
+                        CurrentMatches.Add(Board.instance.allDots[i,j]);
+                        Board.instance.allDots[i, j].GetComponent<Dot>().isMatched = true;
+                    }
                 }
             }
         }

@@ -37,11 +37,11 @@ public class Board : MonoBehaviour
     [SerializeField] private GameObject destroyEffect;
     [SerializeField] public TileType[] boardLayout;
     private bool[,] blankSpaces;
+    private BackgroundTile[,] breakableTiles;
     [SerializeField] private List<GameObject> Dots;
     [SerializeField] private Vector3 cellGap;
-   
-    [Serialize]
-    public GameObject[,] allDots;
+    [SerializeField] private GameObject breakableTileObject;
+    [Serialize] public GameObject[,] allDots;
     [SerializeField] public Vector2 boardDotOffset;
     public Dot CurrentDot;
 
@@ -65,7 +65,7 @@ public class Board : MonoBehaviour
 
     private void Awake()
     {
-       
+        breakableTiles = new BackgroundTile[width, height];
         blankSpaces = new bool[width, height];
         allDots = new GameObject[width, height];
         setup();
@@ -92,9 +92,24 @@ public class Board : MonoBehaviour
         }
     }
 
+    public void generateBreakableTiles()
+    {
+        for (int i = 0; i < boardLayout.Length; i++)
+        {
+            if (boardLayout[i].TileKind==TileKind.Breakable)
+            {
+                Vector2 tempPosition = new Vector2(boardLayout[i].x-width/2, boardLayout[i].y-height/2);
+                Debug.Log("yarattı");
+                GameObject tile = Instantiate(breakableTileObject,tempPosition , quaternion.identity);
+                breakableTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+            }
+        }
+    }
+
     private void setup()
     {
         generateBlankSpaces();
+        generateBreakableTiles();
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
@@ -241,6 +256,16 @@ public class Board : MonoBehaviour
                     FindMatches.instance.checkAdjacentBomb();
                 }
             }
+
+            if (breakableTiles[column,row]!=null)
+            {
+                breakableTiles[column,row].takeDamage(1);
+                if (breakableTiles[column,row].hitPoints<=0)
+                {
+                    breakableTiles[column, row] = null;
+                }
+                
+            }
             FindMatches.instance.CurrentMatches.Remove(allDots[column,row]);
             Vector2 dotPosition = new Vector2(Mathf.Round(allDots[column, row].transform.position.x),
                 Mathf.Round(allDots[column, row].transform.position.y));
@@ -353,7 +378,104 @@ public class Board : MonoBehaviour
         FindMatches.instance.CurrentMatches.Clear();
         CurrentDot = null;
         yield return new WaitForSeconds(0.5f);
+        if (isDeadLock())
+        {
+            Debug.Log("deadlock");
+        }
         CurrentState = GameState.move;
 
+    }
+
+    public void switchPieces(int column,int row,Vector2 direction )
+    {
+        GameObject holder = allDots[column+(int)direction.x, row+(int)direction.y];
+        allDots[column + (int)direction.x, row + (int)direction.y] = allDots[column, row];
+        allDots[column, row] = holder;
+    }
+
+    private bool checkForMatches()
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (allDots[i,j]!=null)
+                {
+                    if (i < width - 2)
+                    {
+
+
+                        if (allDots[i + 1, j] != null && allDots[i + 2, j] != null)
+                        {
+                            if (allDots[i + 1, j].tag == allDots[i, j].tag &&
+                                allDots[i + 2, j].tag == allDots[i, j].tag)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+
+                    if (j < height - 2)
+                    {
+
+
+                        if (allDots[i, j + 1] != null && allDots[i, j + 2] != null)
+                        {
+                            if (allDots[i, j + 1].tag == allDots[i, j].tag &&
+                                allDots[i, j + 2].tag == allDots[i, j].tag)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private bool switchAndCheck(int column, int row, Vector2 direction)
+    {
+        switchPieces(column,row,direction);
+        if (checkForMatches())
+        {
+            switchPieces(column,row,direction);
+            return true;
+        }
+        switchPieces(column,row,direction);
+        return false;
+    }
+
+    private bool isDeadLock()
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (allDots[i,j]!=null)
+                {
+                    if (i<width-1)
+                    {
+                        if (switchAndCheck(i,j,Vector2.right))
+                        {
+                            return false;
+                        }
+
+                        
+                    }
+
+                    if (j<height-1)
+                    {
+                        if (switchAndCheck(i,j,Vector2.up))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 }

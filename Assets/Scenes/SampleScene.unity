@@ -472,30 +472,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentState: 1
-  _height: 10
-  _width: 7
+  _height: 5
+  _width: 5
   offset: 11
   tilePrefab: {fileID: 7780307013009323793, guid: c38a11ea54d2e734cb8a77283cca4f70, type: 3}
   destroyEffect: {fileID: 719610812763867143, guid: df89201467c67f8469f3d4a3006140bc, type: 3}
-  boardLayout:
-  - x: 0
-    y: 0
-    TileKind: 1
-  - x: 6
-    y: 9
-    TileKind: 1
-  - x: 6
-    y: 0
-    TileKind: 1
-  - x: 0
-    y: 9
-    TileKind: 1
-  - x: 3
-    y: 3
-    TileKind: 1
-  - x: 4
-    y: 3
-    TileKind: 1
+  boardLayout: []
   Dots:
   - {fileID: 6614016484404303261, guid: 8a20d5271162d6e4c9cd7e7530e8348d, type: 3}
   - {fileID: 7967909538142009876, guid: dcd216ecbe2aca64d9079ab1a79bc931, type: 3}
@@ -506,6 +488,7 @@ MonoBehaviour:
   - {fileID: 50644336485488877, guid: b3d851d2de6f8754a87ca861256b1058, type: 3}
   - {fileID: 421075326220448667, guid: 6e15c68ea26dc0847b118fd2f08e388e, type: 3}
   cellGap: {x: 0.1, y: 0.1, z: 0}
+  breakableTileObject: {fileID: 8439010489464851604, guid: 393080b8d8b477749aed0f79488b4274, type: 3}
   boardDotOffset: {x: 0, y: 0}
   CurrentDot: {fileID: 0}
 --- !u!4 &1453736297
