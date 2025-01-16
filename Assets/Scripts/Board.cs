@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Unity.VisualScripting;
-
+using UnityEditor.Experimental.GraphView;
 using Random = UnityEngine.Random;
 using WaitForSeconds = UnityEngine.WaitForSeconds;
 
@@ -76,6 +76,7 @@ public class Board : MonoBehaviour
     { 
         boardDotOffset = new Vector2(Mathf.RoundToInt(0-width/2),
             Mathf.RoundToInt(0-height/2));
+       
         offset = height + 1;
     }
 
@@ -263,39 +264,23 @@ public class Board : MonoBehaviour
             }
         }
 
-        StartCoroutine(DecreaseRowCo());
+        StartCoroutine(DecreaseRowCo2());
     }
 
-    public IEnumerator DecreaseRowCo2()
-    {
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                if (allDots[i,j]==null&& !blankSpaces[i,j])
-                {
-                   
-                }
-            }
-        }
 
-        yield return new WaitForSeconds(0.4f);
-        StartCoroutine(FillBoardCo());
-    }
-    public IEnumerator DecreaseRowCo()
+    private IEnumerator DecreaseRowCo2()
     {
-        for (int i = 0; i < width; i++)
+        for (int i = 0; i < width; i ++)
         {
-            for (int j = 0; j < height; j++)
+            for (int j = 0; j < height; j ++)
             {
-                if (!blankSpaces[i,j]&& allDots[i,j]==null)
+                if(!blankSpaces[i,j] && allDots[i,j] == null)
                 {
-                    for (int k = j+1; k < height; k++)
+                    for (int k = j + 1; k < height; k ++)
                     {
-                        if (allDots[i,k]!=null)
+                        if(allDots[i, k]!= null)
                         {
-                            allDots[i, k].GetComponent<Dot>().row = j - (int)boardDotOffset.y+1;
-                            allDots[i, j] = allDots[i, k];
+                            allDots[i, k].GetComponent<Dot>().row = j+(int)boardDotOffset.y;
                             allDots[i, k] = null;
                             break;
                         }
@@ -303,14 +288,16 @@ public class Board : MonoBehaviour
                 }
             }
         }
-
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(.4f);
         StartCoroutine(FillBoardCo());
     }
 
 
 
-    private void RefillBoard()
+
+
+
+   private void RefillBoard()
     {
         for (int i = 0; i < width; i++)
         {
