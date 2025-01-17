@@ -67,6 +67,7 @@ public class Dot : MonoBehaviour
 
     private void OnMouseDown()
     {
+        HintManager.instance.destroyHint();
         if (Board.instance.CurrentState==GameState.move)
         {
             firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);

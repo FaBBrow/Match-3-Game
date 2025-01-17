@@ -452,6 +452,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1453736297}
   - component: {fileID: 1453736296}
+  - component: {fileID: 1453736298}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -472,12 +473,66 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentState: 1
-  _height: 5
-  _width: 5
+  _height: 10
+  _width: 7
   offset: 11
   tilePrefab: {fileID: 7780307013009323793, guid: c38a11ea54d2e734cb8a77283cca4f70, type: 3}
   destroyEffect: {fileID: 719610812763867143, guid: df89201467c67f8469f3d4a3006140bc, type: 3}
-  boardLayout: []
+  boardLayout:
+  - x: 0
+    y: 0
+    TileKind: 1
+  - x: 6
+    y: 0
+    TileKind: 1
+  - x: 0
+    y: 9
+    TileKind: 1
+  - x: 6
+    y: 9
+    TileKind: 1
+  - x: 0
+    y: 4
+    TileKind: 1
+  - x: 0
+    y: 5
+    TileKind: 1
+  - x: 6
+    y: 4
+    TileKind: 1
+  - x: 6
+    y: 5
+    TileKind: 1
+  - x: 1
+    y: 4
+    TileKind: 0
+  - x: 1
+    y: 5
+    TileKind: 0
+  - x: 2
+    y: 4
+    TileKind: 0
+  - x: 2
+    y: 5
+    TileKind: 0
+  - x: 3
+    y: 4
+    TileKind: 0
+  - x: 3
+    y: 5
+    TileKind: 0
+  - x: 4
+    y: 4
+    TileKind: 0
+  - x: 4
+    y: 5
+    TileKind: 0
+  - x: 5
+    y: 4
+    TileKind: 0
+  - x: 5
+    y: 5
+    TileKind: 0
   Dots:
   - {fileID: 6614016484404303261, guid: 8a20d5271162d6e4c9cd7e7530e8348d, type: 3}
   - {fileID: 7967909538142009876, guid: dcd216ecbe2aca64d9079ab1a79bc931, type: 3}
@@ -506,6 +561,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1453736298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453736295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad2d33c12281db540821e59778fa20c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hintDelay: 10
+  hintParticle: {fileID: 2800546539228102625, guid: 2f02ba5e1eaa24e4da5f1543fdcc4763, type: 3}
+  currentHint: {fileID: 0}
 --- !u!1 &1818676092
 GameObject:
   m_ObjectHideFlags: 0

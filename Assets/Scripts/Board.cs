@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
+using UnityEditor.Experimental;
 using Random = UnityEngine.Random;
 using WaitForSeconds = UnityEngine.WaitForSeconds;
 
@@ -380,7 +380,7 @@ public class Board : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         if (isDeadLock())
         {
-            Debug.Log("deadlock");
+            shuffleBoard();
         }
         CurrentState = GameState.move;
 
@@ -435,7 +435,7 @@ public class Board : MonoBehaviour
         return false;
     }
 
-    private bool switchAndCheck(int column, int row, Vector2 direction)
+    public bool switchAndCheck(int column, int row, Vector2 direction)
     {
         switchPieces(column,row,direction);
         if (checkForMatches())
@@ -477,5 +477,49 @@ public class Board : MonoBehaviour
         }
 
         return true;
+    }
+
+    private void shuffleBoard()
+    {
+        List<GameObject> newBoard = new List<GameObject>();
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (allDots[i,j]!=null)
+                {
+                    newBoard.Add(allDots[i,j]);
+                }
+            }
+        }
+
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (!blankSpaces[i,j])
+                {
+                    int pieceToUse = Random.Range(0, newBoard.Count);
+                    
+                    int maxiterations = 0;
+                    while (MatchesAt(i, j, newBoard[pieceToUse]) && maxiterations < 100)
+                    {
+                        pieceToUse = Random.Range(0, newBoard.Count);
+                        maxiterations++;
+                    }
+                    Dot piece = newBoard[pieceToUse].GetComponent<Dot>();
+                    maxiterations = 0;
+                    piece.column = i + (int)boardDotOffset.x;
+                    piece.row = j + (int)boardDotOffset.y;
+                    allDots[i, j] = newBoard[pieceToUse];
+                    newBoard.Remove(newBoard[pieceToUse]);
+                }
+            }
+        }
+
+        if (isDeadLock())
+        {
+            shuffleBoard();
+        }
     }
 }
