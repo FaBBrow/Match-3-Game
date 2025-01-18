@@ -44,6 +44,8 @@ public class Board : MonoBehaviour
     [Serialize] public GameObject[,] allDots;
     [SerializeField] public Vector2 boardDotOffset;
     public Dot CurrentDot;
+    public int basePieceValue = 20;
+    private int streakValue=1;
 
     public Board(int height, int width)
     {
@@ -78,6 +80,8 @@ public class Board : MonoBehaviour
             Mathf.RoundToInt(0-height/2));
        
         offset = height + 1;
+        basePieceValue = 20;
+        streakValue = 1;
     }
 
     public void generateBlankSpaces()
@@ -272,6 +276,7 @@ public class Board : MonoBehaviour
             GameObject particle= Instantiate(destroyEffect, dotPosition, Quaternion.identity);
             Destroy(particle,0.5f);
             Destroy(allDots[column, row]);
+            ScoreManager.instance.increaseScore(basePieceValue*streakValue);
             allDots[column, row] = null;
         }
     }
@@ -372,6 +377,7 @@ public class Board : MonoBehaviour
 
         while (MatchesOnBoard())
         {
+            streakValue++;
             yield return new WaitForSeconds(0.5f);
             DestroyMatches();
         }
@@ -383,7 +389,7 @@ public class Board : MonoBehaviour
             shuffleBoard();
         }
         CurrentState = GameState.move;
-
+        streakValue = 1;
     }
 
     public void switchPieces(int column,int row,Vector2 direction )
