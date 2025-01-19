@@ -1,15 +1,12 @@
-using System;
 using System.Collections;
 using DG.Tweening;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Dot : MonoBehaviour
 {
-    [Header("Board Variables")]
-    public int Targetx;
+    [Header("Board Variables")] public int Targetx;
+
     public int Targety;
     public int previousColumn;
     public int previousRow;
@@ -17,14 +14,11 @@ public class Dot : MonoBehaviour
     public int boardOffsetY;
     public int column;
     public int row;
-    public bool isMatched = false;
-    public bool slideing=true;
-    
+    public bool isMatched;
+    public bool slideing = true;
+
     public GameObject otherDot;
-    private Vector2 firstTouchPosition;
-    private Vector2 finalTouchPosition;
-    private Vector2 tempPosiiton;
-    public float swipdeAngel=0;
+    public float swipdeAngel;
     public float swipeResist = .5f;
 
     public bool isColorBomb;
@@ -35,209 +29,173 @@ public class Dot : MonoBehaviour
     [SerializeField] private GameObject collumnArrow;
     [SerializeField] private GameObject colorBomb;
     [SerializeField] private GameObject adjacentBomb;
+    private Vector2 finalTouchPosition;
+    private Vector2 firstTouchPosition;
+    private Vector2 tempPosiiton;
+
     private void Start()
     {
         boardOffsetX = (int)Board.instance.boardDotOffset.x;
         boardOffsetY = (int)Board.instance.boardDotOffset.y;
-        Targetx=Mathf.RoundToInt(this.transform.position.x);
-        Targety= Mathf.RoundToInt(this.transform.position.y);
+        Targetx = Mathf.RoundToInt(transform.position.x);
+        Targety = Mathf.RoundToInt(transform.position.y);
         column = Targetx;
         row = Targety;
-        previousRow = row ;
-        previousColumn = column ;
-
+        previousRow = row;
+        previousColumn = column;
     }
 
     private void Update()
     {
         setNewPosition();
-        
+
         Targetx = column;
         Targety = row;
-       
-        
-       /*" if (isMatched)
-        {
-            SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
-            mySprite.color = new Color(0, 0, 0, .2f);
-        }*/
+
+
+        /*" if (isMatched)
+         {
+             SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
+             mySprite.color = new Color(0, 0, 0, .2f);
+         }*/
         //FindMatchs();
-        
     }
 
     private void OnMouseDown()
     {
         HintManager.instance.destroyHint();
-        if (Board.instance.CurrentState==GameState.move)
+        if (Board.instance.CurrentState == GameState.move)
         {
             firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Debug.Log(firstTouchPosition);
         }
-       
-        
     }
 
     private void OnMouseUp()
     {
-        if (Board.instance.CurrentState==GameState.move)
+        if (Board.instance.CurrentState == GameState.move)
         {
             finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Debug.Log(finalTouchPosition);
             calculateAngle();
-
         }
-        
     }
 
-    void calculateAngle()
+    private void calculateAngle()
     {
-        if (Mathf.Abs(finalTouchPosition.y-firstTouchPosition.y)>swipeResist|| Mathf.Abs(finalTouchPosition.x-firstTouchPosition.x)>swipeResist)
+        if (Mathf.Abs(finalTouchPosition.y - firstTouchPosition.y) > swipeResist ||
+            Mathf.Abs(finalTouchPosition.x - firstTouchPosition.x) > swipeResist)
         {
             swipdeAngel = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y,
-                finalTouchPosition.x - firstTouchPosition.x)*(180/Mathf.PI);
+                finalTouchPosition.x - firstTouchPosition.x) * (180 / Mathf.PI);
             Debug.Log(swipdeAngel);
             movePieces();
             Board.instance.CurrentState = GameState.wait;
             Board.instance.CurrentDot = this;
             if (isRowBomb)
-            {
                 FindMatches.instance.getRowPieces(row - boardOffsetY);
-            }
-            else if (isCollumnBomb)
-            {
-                FindMatches.instance.getColumnPieces(column - boardOffsetX);
-            }
+            else if (isCollumnBomb) FindMatches.instance.getColumnPieces(column - boardOffsetX);
 
-            if (isColorBomb)
-            {
-                FindMatches.instance.GetColorPieces(otherDot.GetComponent<SpriteRenderer>(),this.gameObject);
-            }
+            if (isColorBomb) FindMatches.instance.GetColorPieces(otherDot.GetComponent<SpriteRenderer>(), gameObject);
 
-            if (isAdjacentBomb)
-            {
-                FindMatches.instance.getAdjacentPieces(column-boardOffsetX,row-boardOffsetY);
-            }
+            if (isAdjacentBomb) FindMatches.instance.getAdjacentPieces(column - boardOffsetX, row - boardOffsetY);
         }
         else
         {
             Board.instance.CurrentState = GameState.move;
-            
         }
-        
-        
-        
     }
 
     public void movePiecesActual(Vector2 direction)
     {
-        otherDot = (column - (int)Board.instance.boardDotOffset.x + (int)direction.x >= 0 &&
-                    column - (int)Board.instance.boardDotOffset.x + (int)direction.x < Board.instance.allDots.GetLength(0) &&
-                    row - (int)Board.instance.boardDotOffset.y + (int)direction.y >= 0 &&
-                    row - (int)Board.instance.boardDotOffset.y + (int)direction.y < Board.instance.allDots.GetLength(1))
+        otherDot = column - (int)Board.instance.boardDotOffset.x + (int)direction.x >= 0 &&
+                   column - (int)Board.instance.boardDotOffset.x + (int)direction.x <
+                   Board.instance.allDots.GetLength(0) &&
+                   row - (int)Board.instance.boardDotOffset.y + (int)direction.y >= 0 &&
+                   row - (int)Board.instance.boardDotOffset.y + (int)direction.y < Board.instance.allDots.GetLength(1)
             ? Board.instance.allDots[column - (int)Board.instance.boardDotOffset.x + (int)direction.x,
                 row - (int)Board.instance.boardDotOffset.y + (int)direction.y]
             : null;
 
-        if (otherDot!=null)
+        if (otherDot != null)
         {
-            previousRow = row ;
-            previousColumn = column ;
-            otherDot.GetComponent<Dot>().column+=-1* (int)direction.x;
-            otherDot.GetComponent<Dot>().row+=-1* (int)direction.y;
+            previousRow = row;
+            previousColumn = column;
+            otherDot.GetComponent<Dot>().column += -1 * (int)direction.x;
+            otherDot.GetComponent<Dot>().row += -1 * (int)direction.y;
             row += (int)direction.y;
             column += (int)direction.x;
         }
-       
-       
     }
-    
+
     public void movePieces()
     {
-        if (swipdeAngel>-45&& swipdeAngel<=45&&column<Board.instance.width-1)
-        {
+        if (swipdeAngel > -45 && swipdeAngel <= 45 && column < Board.instance.width - 1)
             movePiecesActual(Vector2.right);
-
-        }
-        else if (swipdeAngel>45&& swipdeAngel<=135&& row<Board.instance.height-1)
-        {
+        else if (swipdeAngel > 45 && swipdeAngel <= 135 && row < Board.instance.height - 1)
             movePiecesActual(Vector2.up);
-
-        }
-        else if ((swipdeAngel>135 || swipdeAngel<=-135)&& column-Board.instance.boardDotOffset.x>0)
-        {
+        else if ((swipdeAngel > 135 || swipdeAngel <= -135) && column - Board.instance.boardDotOffset.x > 0)
             movePiecesActual(Vector2.left);
-
-        }
-        else if (swipdeAngel<-45&& swipdeAngel>=-135&& row-Board.instance.boardDotOffset.y>0)
-        {
+        else if (swipdeAngel < -45 && swipdeAngel >= -135 && row - Board.instance.boardDotOffset.y > 0)
             movePiecesActual(Vector2.down);
-
-        }
 
         StartCoroutine(CheckMoveCo());
     }
 
-   public void setNewPosition()
+    public void setNewPosition()
     {
-        if (Mathf.Abs(Targetx-transform.position.x)>.1f)
+        if (Mathf.Abs(Targetx - transform.position.x) > .1f)
         {
             tempPosiiton = new Vector2(Targetx, transform.position.y);
-            
-          
+
+
             transform.DOMove(tempPosiiton, 1);
-            
-            if (Board.instance.allDots[column-boardOffsetX,row-boardOffsetY]!=this.gameObject)
-            {
-                Board.instance.allDots[column - boardOffsetX, row - boardOffsetY] = this.gameObject;
-            }
+
+            if (Board.instance.allDots[column - boardOffsetX, row - boardOffsetY] != gameObject)
+                Board.instance.allDots[column - boardOffsetX, row - boardOffsetY] = gameObject;
             FindMatches.instance.findAllMatches();
         }
-       
-        else 
+
+        else
         {
             tempPosiiton = new Vector2(Targetx, transform.position.y);
-            
+
             transform.DOMove(tempPosiiton, 1);
-           
+
             //gameObject.name="( " + (collumn- (int)Board.instance.boardDotOffset.x) + "," + (row- (int)Board.instance.boardDotOffset.y) + ")";
         }
-        if (Mathf.Abs(Targety-transform.position.y)>.1f)
+
+        if (Mathf.Abs(Targety - transform.position.y) > .1f)
         {
             tempPosiiton = new Vector2(transform.position.x, Targety);
-           
+
             transform.DOMove(tempPosiiton, 1);
-            if (Board.instance.allDots[column-boardOffsetX,row-boardOffsetY]!=this.gameObject)
-            {
-                Board.instance.allDots[column - boardOffsetX, row - boardOffsetY] = this.gameObject;
-            }
+            if (Board.instance.allDots[column - boardOffsetX, row - boardOffsetY] != gameObject)
+                Board.instance.allDots[column - boardOffsetX, row - boardOffsetY] = gameObject;
             FindMatches.instance.findAllMatches();
         }
-        else 
+        else
         {
             tempPosiiton = new Vector2(transform.position.x, Targety);
             transform.DOMove(tempPosiiton, 1);
         }
+
         {
-           
-            
         }
-        if (Targety>Mathf.Floor(Board.instance.height/2))
+        if (Targety > Mathf.Floor(Board.instance.height / 2))
         {
-            Targety -= Board.instance.height+1;
+            Targety -= Board.instance.height + 1;
             row -= Board.instance.height + 1;
         }
-        
     }
-
 
 
     public IEnumerator CheckMoveCo()
     {
         yield return new WaitForSeconds(1f);
-        if (otherDot!=null)
+        if (otherDot != null)
         {
-          
-             if (!isMatched&& !otherDot.GetComponent<Dot>().isMatched)
+            if (!isMatched && !otherDot.GetComponent<Dot>().isMatched)
             {
                 otherDot.GetComponent<Dot>().column = column;
                 otherDot.GetComponent<Dot>().row = row;
@@ -250,7 +208,6 @@ public class Dot : MonoBehaviour
             else
             {
                 Board.instance.DestroyMatches();
-                
             }
             // otherDot = null;
         }
@@ -258,37 +215,34 @@ public class Dot : MonoBehaviour
         {
             Board.instance.CurrentState = GameState.move;
         }
-       
-
     }
 
     public void makeRowBomb()
     {
         isRowBomb = true;
-        GameObject arrow = Instantiate(rowArrow, transform.position, quaternion.identity);
-        arrow.transform.parent = this.transform;
+        var arrow = Instantiate(rowArrow, transform.position, quaternion.identity);
+        arrow.transform.parent = transform;
     }
 
     public void makeColumnBomb()
     {
         isCollumnBomb = true;
-        GameObject arrow = Instantiate(collumnArrow, transform.position, quaternion.identity);
-        arrow.transform.parent = this.transform;
+        var arrow = Instantiate(collumnArrow, transform.position, quaternion.identity);
+        arrow.transform.parent = transform;
     }
 
     public void makeColorBomb()
     {
         isColorBomb = true;
-        GameObject bomb = Instantiate(colorBomb, transform.position, quaternion.identity);
-        bomb.transform.parent = this.transform;
+        var bomb = Instantiate(colorBomb, transform.position, quaternion.identity);
+        bomb.transform.parent = transform;
+        gameObject.tag = "color";
     }
 
     public void makeAdjacentBomb()
     {
         isAdjacentBomb = true;
-        GameObject adjacent = Instantiate(adjacentBomb, transform.position, quaternion.identity);
-        adjacent.transform.parent = this.transform;
+        var adjacent = Instantiate(adjacentBomb, transform.position, quaternion.identity);
+        adjacent.transform.parent = transform;
     }
 }
-
-

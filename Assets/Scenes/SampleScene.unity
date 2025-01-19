@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aspectRatio: 0.625
-  padding: 2
+  padding: 0.5
   yOffset: 1
 --- !u!1 &615867152
 GameObject:
@@ -1005,8 +1005,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentState: 1
-  _height: 8
-  _width: 6
+  _height: 7
+  _width: 10
   offset: 11
   tilePrefab: {fileID: 8974300507216127070, guid: 9ca98795d8acca5409f5a55c919f179f, type: 3}
   destroyEffect: {fileID: 719610812763867143, guid: df89201467c67f8469f3d4a3006140bc, type: 3}

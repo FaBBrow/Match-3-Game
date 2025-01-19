@@ -13,6 +13,7 @@ TagManager:
   - Red Dot
   - Yellow Dot
   - Cyan Dot
+  - color
   layers:
   - Default
   - TransparentFX
