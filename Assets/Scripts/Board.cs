@@ -44,6 +44,7 @@ public class Board : MonoBehaviour
     [SerializeField] public Vector2 boardDotOffset;
     public Dot CurrentDot;
     public int basePieceValue = 20;
+    public int[] scoreGoals;
     [Serialize] public GameObject[,] allDots;
     public bool[,] blankSpaces;
     private BackgroundTile[,] breakableTiles;
@@ -219,6 +220,7 @@ public class Board : MonoBehaviour
             FindMatches.instance.CurrentMatches.Remove(allDots[column, row]);
             var dotPosition = new Vector2(Mathf.Round(allDots[column, row].transform.position.x),
                 Mathf.Round(allDots[column, row].transform.position.y));
+            SoundManager.instance.playRandomDestroyNoises();
             var particle = Instantiate(destroyEffect, dotPosition, Quaternion.identity);
             Destroy(particle, 0.5f);
             Destroy(allDots[column, row]);
