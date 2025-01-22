@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class BackgroundTile : MonoBehaviour
 {
-
     public int hitPoints;
     private SpriteRenderer sprite;
 
@@ -17,9 +12,11 @@ public class BackgroundTile : MonoBehaviour
 
     private void Update()
     {
-        if (hitPoints<=0)
+        if (hitPoints <= 0)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
+            GoalManager.instance.compareGoal(gameObject.tag);
+            GoalManager.instance.updateGoals();
         }
     }
 
@@ -31,10 +28,8 @@ public class BackgroundTile : MonoBehaviour
 
     public void makeLighter()
     {
-        Color color = sprite.color;
-        float newAlpha = color.a * 0.5f;
+        var color = sprite.color;
+        var newAlpha = color.a * 0.5f;
         sprite.color = new Color(color.r, color.g, color.b, newAlpha);
     }
-
-
 }
