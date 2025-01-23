@@ -207,6 +207,8 @@ public class Dot : MonoBehaviour
             }
             else
             {
+                if (EndGameManager.instance.requirements.gameType == GameType.Moves)
+                    EndGameManager.instance.decreaseCounterValue();
                 Board.instance.DestroyMatches();
             }
             // otherDot = null;
