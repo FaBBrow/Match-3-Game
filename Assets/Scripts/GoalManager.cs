@@ -64,7 +64,7 @@ public class GoalManager : MonoBehaviour
             }
         }
 
-        if (goalsCompleted >= levelGoals.Length) Debug.Log("wind");
+        if (goalsCompleted >= levelGoals.Length) EndGameManager.instance.WinGame();
     }
 
     public void compareGoal(string goaltocompare)

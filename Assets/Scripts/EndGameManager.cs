@@ -26,6 +26,8 @@ public class EndGameManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI counter;
 
+    [SerializeField] private GameObject YouWinPanel;
+    [SerializeField] private GameObject TryAgainPanel;
     public int currentCounterValue;
     public float timerSeconds;
 
@@ -70,14 +72,31 @@ public class EndGameManager : MonoBehaviour
 
     public void decreaseCounterValue()
     {
-        currentCounterValue--;
-        counter.text = "" + currentCounterValue;
-
-        if (currentCounterValue <= 0)
+        if (Board.instance.CurrentState != GameState.pause)
         {
-            Debug.Log("lose");
-            currentCounterValue = 0;
+            currentCounterValue--;
             counter.text = "" + currentCounterValue;
+
+            if (currentCounterValue <= 0) LoseGame();
         }
+    }
+
+    public void WinGame()
+    {
+        YouWinPanel.SetActive(true);
+        Board.instance.CurrentState = GameState.win;
+        currentCounterValue = 0;
+        counter.text = "" + currentCounterValue;
+        FadePanelController.instance.GameOver();
+    }
+
+    public void LoseGame()
+    {
+        TryAgainPanel.SetActive(true);
+        Board.instance.CurrentState = GameState.lose;
+        Debug.Log("lose");
+        currentCounterValue = 0;
+        counter.text = "" + currentCounterValue;
+        FadePanelController.instance.GameOver();
     }
 }

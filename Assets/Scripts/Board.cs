@@ -10,7 +10,10 @@ using WaitForSeconds = UnityEngine.WaitForSeconds;
 public enum GameState
 {
     wait,
-    move
+    move,
+    win,
+    lose,
+    pause
 }
 
 public enum TileKind
@@ -85,6 +88,7 @@ public class Board : MonoBehaviour
         offset = height + 1;
         basePieceValue = 20;
         streakValue = 1;
+        CurrentState = GameState.pause;
     }
 
     public void generateBlankSpaces()
