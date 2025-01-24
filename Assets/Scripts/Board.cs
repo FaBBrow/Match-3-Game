@@ -34,6 +34,10 @@ public class TileType
 public class Board : MonoBehaviour
 {
     public static Board instance;
+
+    [Header("Scriptable Object Stuff")] public World world;
+    public int level;
+
     public GameState CurrentState = GameState.move;
     [SerializeField] private int _height;
     [SerializeField] private int _width;
@@ -48,6 +52,7 @@ public class Board : MonoBehaviour
     public Dot CurrentDot;
     public int basePieceValue = 20;
     public int[] scoreGoals;
+
     [Serialize] public GameObject[,] allDots;
     public bool[,] blankSpaces;
     private BackgroundTile[,] breakableTiles;
@@ -73,11 +78,21 @@ public class Board : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
+        if (world != null)
+            if (world.levels[level] != null)
+            {
+                width = world.levels[level].width;
+                height = world.levels[level].height;
+                Dots = world.levels[level].Dots;
+                scoreGoals = world.levels[level].ScoreGoals;
+                boardLayout = world.levels[level].BoardLayout;
+            }
+
         breakableTiles = new BackgroundTile[width, height];
         blankSpaces = new bool[width, height];
         allDots = new GameObject[width, height];
         setup();
-        instance = this;
     }
 
     private void Start()

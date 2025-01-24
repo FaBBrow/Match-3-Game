@@ -3453,41 +3453,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535742c8b12647d47bfac515b4ace800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  world: {fileID: 11400000, guid: 6b41300cef1743f4ea7869339d636ddb, type: 2}
+  level: 2
   CurrentState: 1
   _height: 7
   _width: 10
   offset: 11
   tilePrefab: {fileID: 8974300507216127070, guid: 9ca98795d8acca5409f5a55c919f179f, type: 3}
   destroyEffect: {fileID: 719610812763867143, guid: df89201467c67f8469f3d4a3006140bc, type: 3}
-  boardLayout:
-  - x: 4
-    y: 4
-    TileKind: 0
-  - x: 5
-    y: 5
-    TileKind: 0
-  - x: 6
-    y: 6
-    TileKind: 0
-  - x: 3
-    y: 3
-    TileKind: 0
-  - x: 2
-    y: 2
-    TileKind: 0
-  Dots:
-  - {fileID: 6614016484404303261, guid: 8a20d5271162d6e4c9cd7e7530e8348d, type: 3}
-  - {fileID: 2290466739317227952, guid: 58675024dea8a924882e7fb52fe32183, type: 3}
-  - {fileID: 5389915196206725285, guid: a051479bcd85e3842811f0c34a4ac08f, type: 3}
-  - {fileID: 1101987362061108308, guid: 0cd053c8200444c44a77e3f5adb4aed6, type: 3}
-  - {fileID: 50644336485488877, guid: b3d851d2de6f8754a87ca861256b1058, type: 3}
-  - {fileID: 421075326220448667, guid: 6e15c68ea26dc0847b118fd2f08e388e, type: 3}
+  boardLayout: []
+  Dots: []
   cellGap: {x: 0.1, y: 0.1, z: 0}
   breakableTileObject: {fileID: 8439010489464851604, guid: 393080b8d8b477749aed0f79488b4274, type: 3}
   boardDotOffset: {x: 0, y: 0}
   CurrentDot: {fileID: 0}
   basePieceValue: 0
-  scoreGoals: d0070000a00f000088130000
+  scoreGoals: 
 --- !u!4 &1453736297
 Transform:
   m_ObjectHideFlags: 0
@@ -4588,15 +4569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGoals: []
-  levelGoals:
-  - numberNeeded: 3
-    numberCollected: 0
-    goalSprite: {fileID: 972900774464544880, guid: 0aa01e67979f76142954426add7ee620, type: 3}
-    matchValue: Red Dot
-  - numberNeeded: 3
-    numberCollected: 0
-    goalSprite: {fileID: -1612733900409905880, guid: 73d3afc78530db543a17de8e2f11cfd4, type: 3}
-    matchValue: Green Dot
+  levelGoals: []
   goalPrefab: {fileID: 4366421917588468442, guid: f6799a879aa9f124e9593269698a6c6a, type: 3}
   goalIntroParent: {fileID: 610027342}
   goalGameParent: {fileID: 255442815}

@@ -35,8 +35,10 @@ public class EndGameManager : MonoBehaviour
     private void Start()
     {
         instance = this;
+        SetGameType();
         setupGame();
     }
+
 
     // Update is called once per frame
     private void Update()
@@ -50,6 +52,11 @@ public class EndGameManager : MonoBehaviour
                 timerSeconds = 1;
             }
         }
+    }
+
+    public void SetGameType()
+    {
+        requirements = Board.instance.world.levels[Board.instance.level].EndGameRequirements;
     }
 
     public void setupGame()

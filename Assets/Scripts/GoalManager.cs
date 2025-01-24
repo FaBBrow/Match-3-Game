@@ -25,12 +25,18 @@ public class GoalManager : MonoBehaviour
     private void Start()
     {
         instance = this;
+        GetGoals();
         setupIntroGoals();
     }
 
     // Update is called once per frame
     private void Update()
     {
+    }
+
+    public void GetGoals()
+    {
+        levelGoals = Board.instance.world.levels[Board.instance.level].levelGoals;
     }
 
     public void setupIntroGoals()
