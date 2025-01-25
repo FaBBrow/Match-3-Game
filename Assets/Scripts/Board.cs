@@ -78,6 +78,7 @@ public class Board : MonoBehaviour
 
     private void Awake()
     {
+        if (PlayerPrefs.HasKey("Current Level")) level = PlayerPrefs.GetInt("Current Level");
         instance = this;
         if (world != null)
             if (world.levels[level] != null)

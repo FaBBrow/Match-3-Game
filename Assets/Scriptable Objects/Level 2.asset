@@ -22,3 +22,11 @@ MonoBehaviour:
   - {fileID: 1101987362061108308, guid: 0cd053c8200444c44a77e3f5adb4aed6, type: 3}
   - {fileID: 50644336485488877, guid: b3d851d2de6f8754a87ca861256b1058, type: 3}
   ScoreGoals: e803000088130000581b0000
+  EndGameRequirements:
+    gameType: 0
+    counterValue: 50
+  levelGoals:
+  - numberNeeded: 5
+    numberCollected: 0
+    goalSprite: {fileID: -3771975920200272187, guid: 67a2fd7cecf47c2469ce44700950cb7a, type: 3}
+    matchValue: Orange Dot
