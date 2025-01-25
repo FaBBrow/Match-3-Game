@@ -10,6 +10,7 @@ public class LevelButton : MonoBehaviour
     public Image buttonImage;
     public Image[] stars;
     public TextMeshProUGUI levelText;
+    private int starsActive;
 
 
     public int level;
@@ -22,6 +23,7 @@ public class LevelButton : MonoBehaviour
     {
         buttonImage = GetComponent<Image>();
         myButton = GetComponent<Button>();
+        loadData();
         ActivateStars();
         ShowLevel();
         DecideSprite();
@@ -32,9 +34,20 @@ public class LevelButton : MonoBehaviour
     {
     }
 
+    public void loadData()
+    {
+        if (GameData.gameData.saveData.isActive[level - 1])
+        {
+            isActive = true;
+        }
+        else
+            isActive = false;
+
+        starsActive = GameData.gameData.saveData.stars[level - 1];
+    }
     public void ActivateStars()
     {
-        for (var i = 0; i < stars.Length; i++) stars[i].enabled = false;
+        for (var i = 0; i < starsActive; i++) stars[i].enabled = true;
     }
 
     public void DecideSprite()

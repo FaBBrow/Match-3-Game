@@ -21,3 +21,11 @@ MonoBehaviour:
   - {fileID: 5389915196206725285, guid: a051479bcd85e3842811f0c34a4ac08f, type: 3}
   - {fileID: 1101987362061108308, guid: 0cd053c8200444c44a77e3f5adb4aed6, type: 3}
   ScoreGoals: 640000009001000058020000
+  EndGameRequirements:
+    gameType: 0
+    counterValue: 50
+  levelGoals:
+  - numberNeeded: 5
+    numberCollected: 0
+    goalSprite: {fileID: -1612733900409905880, guid: 73d3afc78530db543a17de8e2f11cfd4, type: 3}
+    matchValue: Green Dot

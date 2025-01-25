@@ -23,6 +23,11 @@ public class ScoreManager : MonoBehaviour
     public void increaseScore(int amount)
     {
         score += amount;
+        if (score>GameData.gameData.saveData.highScores[Board.instance.level])
+        {
+            GameData.gameData.saveData.highScores[Board.instance.level] = score;
+            GameData.gameData.Save();
+        }
         var length = Board.instance.scoreGoals.Length;
         scoreBoard.fillAmount = score / (float)Board.instance.scoreGoals[length - 1];
     }

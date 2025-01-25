@@ -15,7 +15,14 @@ public class BackToSplash : MonoBehaviour
     {
     }
 
-    public void OK()
+    public void WinOK()
+    {
+        GameData.gameData.saveData.isActive[Board.instance.level+1] = true;
+        GameData.gameData.Save();
+        SceneManager.LoadScene(SceneToLoad);
+    }
+
+    public void LoseOk()
     {
         SceneManager.LoadScene(SceneToLoad);
     }

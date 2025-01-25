@@ -20,6 +20,7 @@ public class GameData : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
+        
         if (gameData == null)
         {
             DontDestroyOnLoad(gameObject);
@@ -29,11 +30,12 @@ public class GameData : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        Load();
     }
 
     private void Start()
     {
-        Load();
+      
     }
 
     // Update is called once per frame
