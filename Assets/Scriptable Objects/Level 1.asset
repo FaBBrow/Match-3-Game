@@ -25,7 +25,7 @@ MonoBehaviour:
     gameType: 0
     counterValue: 50
   levelGoals:
-  - numberNeeded: 5
+  - numberNeeded: 10000
     numberCollected: 0
     goalSprite: {fileID: -1612733900409905880, guid: 73d3afc78530db543a17de8e2f11cfd4, type: 3}
     matchValue: Green Dot

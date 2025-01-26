@@ -221,30 +221,46 @@ public class Dot : MonoBehaviour
 
     public void makeRowBomb()
     {
-        isRowBomb = true;
-        var arrow = Instantiate(rowArrow, transform.position, quaternion.identity);
-        arrow.transform.parent = transform;
+        if (!isCollumnBomb&& !isColorBomb && !isAdjacentBomb)
+        {
+            isRowBomb = true;
+            var arrow = Instantiate(rowArrow, transform.position, quaternion.identity);
+            arrow.transform.parent = transform;
+            
+        }
     }
 
     public void makeColumnBomb()
     {
-        isCollumnBomb = true;
-        var arrow = Instantiate(collumnArrow, transform.position, quaternion.identity);
-        arrow.transform.parent = transform;
+        if (!isRowBomb && !isColorBomb && !isAdjacentBomb)
+        {
+            
+            isCollumnBomb = true;
+            var arrow = Instantiate(collumnArrow, transform.position, quaternion.identity);
+            arrow.transform.parent = transform;
+        }
     }
 
     public void makeColorBomb()
     {
-        isColorBomb = true;
-        var bomb = Instantiate(colorBomb, transform.position, quaternion.identity);
-        bomb.transform.parent = transform;
-        gameObject.tag = "color";
+        if (!isRowBomb && !isAdjacentBomb && !isCollumnBomb)
+        {
+            
+            isColorBomb = true;
+            var bomb = Instantiate(colorBomb, transform.position, quaternion.identity);
+            bomb.transform.parent = transform;
+            gameObject.tag = "color";
+        }
     }
 
     public void makeAdjacentBomb()
     {
-        isAdjacentBomb = true;
-        var adjacent = Instantiate(adjacentBomb, transform.position, quaternion.identity);
-        adjacent.transform.parent = transform;
+        if (!isCollumnBomb && !isColorBomb && !isRowBomb)
+        {
+            
+            isAdjacentBomb = true;
+            var adjacent = Instantiate(adjacentBomb, transform.position, quaternion.identity);
+            adjacent.transform.parent = transform;
+        }
     }
 }

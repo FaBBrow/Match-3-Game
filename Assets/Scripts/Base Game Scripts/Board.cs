@@ -200,36 +200,96 @@ public class Board : MonoBehaviour
         return false;
     }
 
-    private bool columnOrRow()
+    private int columnOrRow()
     {
-        var numberHorizontal = 0;
-        var numberVertical = 0;
-        var firstPiece = FindMatches.instance.CurrentMatches[0].GetComponent<Dot>();
-        if (firstPiece != null)
-            foreach (var curentpiece in FindMatches.instance.CurrentMatches)
+        List<GameObject> matchCopy = FindMatches.instance.CurrentMatches as List<GameObject>;
+        for (int i = 0; i < matchCopy.Count; i++)
+        {
+            Dot thisdot = matchCopy[i].GetComponent<Dot>();
+            int column = thisdot.column;
+            int row = thisdot.row;
+            int columnMatch = 0;
+            int rowMatch = 0;
+            for (int j = 0; j < matchCopy.Count; j++)
             {
-                var dot = curentpiece.GetComponent<Dot>();
-                if (dot.row == firstPiece.row) numberHorizontal++;
+                Dot nextdot = matchCopy[j].GetComponent<Dot>();
+                if (nextdot==thisdot)
+                {
+                    continue;
+                }
 
-                if (dot.column == firstPiece.column) numberVertical++;
+                if (nextdot.column==thisdot.column&& nextdot.CompareTag(thisdot.tag))
+                {
+                    columnMatch++;
+                }
+
+                if (nextdot.row==thisdot.row && nextdot.CompareTag(thisdot.tag))
+                {
+                    rowMatch++;
+                }
             }
 
-        return numberHorizontal == 5 || numberVertical == 5;
+            if (columnMatch==4|| rowMatch==4)
+            {
+                return 1;
+            }
+
+            if (columnMatch==2&& rowMatch==2)
+            {
+                return 2;
+            }
+
+            if (columnMatch==3|| rowMatch==3)
+            {
+                return 3;
+            }
+        }
+        return 0;
+        //     var numberHorizontal = 0;
+        //     var numberVertical = 0;
+        //     var firstPiece = FindMatches.instance.CurrentMatches[0].GetComponent<Dot>();
+        //     if (firstPiece != null)
+        //         foreach (var curentpiece in FindMatches.instance.CurrentMatches)
+        //         {
+        //             var dot = curentpiece.GetComponent<Dot>();
+        //             if (dot.row == firstPiece.row) numberHorizontal++;
+        //
+        //             if (dot.column == firstPiece.column) numberVertical++;
+        //         }
+        //
+        //     return numberHorizontal == 5 || numberVertical == 5;
     }
 
     public void DestroyMatchesAt(int column, int row)
     {
+        if (FindMatches.instance.CurrentMatches.Count > 3)
+        {
+            int typeOfMatch = columnOrRow();
+            if (typeOfMatch==1)
+            {
+                FindMatches.instance.checkColorBombs();
+            }
+            else if (typeOfMatch==2)
+            {
+                FindMatches.instance.checkAdjacentBomb();
+            }
+            else if (typeOfMatch==3)
+            {
+             FindMatches.instance.checkBombs();   
+            }
+        }
+
         if (allDots[column, row].GetComponent<Dot>().isMatched)
         {
-            if (FindMatches.instance.CurrentMatches.Count == 4) FindMatches.instance.checkBombs();
-
-            if (FindMatches.instance.CurrentMatches.Count == 5 || FindMatches.instance.CurrentMatches.Count == 8)
-            {
-                if (columnOrRow())
-                    FindMatches.instance.checkColorBombs();
-                else
-                    FindMatches.instance.checkAdjacentBomb();
-            }
+            //     if (FindMatches.instance.CurrentMatches.Count == 4) FindMatches.instance.checkBombs();
+            //
+            //     if (FindMatches.instance.CurrentMatches.Count == 5 || FindMatches.instance.CurrentMatches.Count == 8)
+            //     {
+            //         if (columnOrRow())
+            //             FindMatches.instance.checkColorBombs();
+            //         else
+            //             FindMatches.instance.checkAdjacentBomb();
+            //     }
 
             if (breakableTiles[column, row] != null)
             {
@@ -248,6 +308,7 @@ public class Board : MonoBehaviour
             Destroy(allDots[column, row]);
             ScoreManager.instance.increaseScore(basePieceValue * streakValue);
             allDots[column, row] = null;
+
         }
     }
 
@@ -317,9 +378,9 @@ public class Board : MonoBehaviour
 
     private IEnumerator FillBoardCo()
     {
-        RefillBoard();
+        
         yield return new WaitForSeconds(0.5f);
-
+        RefillBoard();
         while (MatchesOnBoard())
         {
             streakValue++;
