@@ -15,6 +15,7 @@ TagManager:
   - Cyan Dot
   - color
   - breakable
+  - Gray Dot
   layers:
   - Default
   - TransparentFX

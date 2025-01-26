@@ -305,7 +305,8 @@ public class Board : MonoBehaviour
             SoundManager.instance.playRandomDestroyNoises();
             var particle = Instantiate(destroyEffect, dotPosition, Quaternion.identity);
             Destroy(particle, 0.5f);
-            Destroy(allDots[column, row]);
+            allDots[column,row].GetComponent<Dot>().popAnimation();
+            Destroy(allDots[column, row],.5f);
             ScoreManager.instance.increaseScore(basePieceValue * streakValue);
             allDots[column, row] = null;
 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4714662773390933235}
   - component: {fileID: -1980418871069287184}
   - component: {fileID: 4175228352685378488}
+  - component: {fileID: 6663165469842180031}
   m_Layer: 0
   m_Name: Cyan Dot
   m_TagString: Cyan Dot
@@ -78,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 359998337175102873, guid: 636226c965839ce4dafb0241b6e77671, type: 3}
+  m_Sprite: {fileID: -1832734570, guid: 377fffc7d0355ca49b6e1ea1296101d5, type: 3}
   m_Color: {r: 0.011764706, g: 0.7529412, b: 0.7764706, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -158,3 +159,25 @@ MonoBehaviour:
   collumnArrow: {fileID: 4021906668098377202, guid: fbe728ba1f0bd944996f59d118fe45b9, type: 3}
   colorBomb: {fileID: 2417620842142871896, guid: 639e5a0e25331f3449f3b3cee298e2ef, type: 3}
   adjacentBomb: {fileID: 7801921407020263870, guid: 27589d72df2285c47ab6f3e4907b85ba, type: 3}
+--- !u!95 &6663165469842180031
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7967909538142009876}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1892642373b765443a6621e792f1a18b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

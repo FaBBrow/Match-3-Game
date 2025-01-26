@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5374657383130692326}
   - component: {fileID: 7014921597852130957}
   - component: {fileID: -1147035125485822338}
+  - component: {fileID: 4340878405534602148}
   m_Layer: 0
   m_Name: Red Dot
   m_TagString: Red Dot
@@ -78,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 972900774464544880, guid: 0aa01e67979f76142954426add7ee620, type: 3}
+  m_Sprite: {fileID: 1752824325, guid: 377fffc7d0355ca49b6e1ea1296101d5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -158,3 +159,25 @@ MonoBehaviour:
   collumnArrow: {fileID: 4021906668098377202, guid: fbe728ba1f0bd944996f59d118fe45b9, type: 3}
   colorBomb: {fileID: 2417620842142871896, guid: 639e5a0e25331f3449f3b3cee298e2ef, type: 3}
   adjacentBomb: {fileID: 7801921407020263870, guid: 27589d72df2285c47ab6f3e4907b85ba, type: 3}
+--- !u!95 &4340878405534602148
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50644336485488877}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9ce41f6d8f90b454988437f4e0610140, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

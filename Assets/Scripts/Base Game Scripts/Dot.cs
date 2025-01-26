@@ -2,6 +2,8 @@ using System.Collections;
 using DG.Tweening;
 using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class Dot : MonoBehaviour
 {
@@ -20,7 +22,8 @@ public class Dot : MonoBehaviour
     public GameObject otherDot;
     public float swipdeAngel;
     public float swipeResist = .5f;
-
+    private Animator anim;
+    private float shineDelay;
     public bool isColorBomb;
     public bool isCollumnBomb;
     public bool isRowBomb;
@@ -43,10 +46,19 @@ public class Dot : MonoBehaviour
         row = Targety;
         previousRow = row;
         previousColumn = column;
+        shineDelay = Random.Range(3f, 6f);
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
     {
+        shineDelay -= Time.deltaTime;
+        if (shineDelay<=0)
+        {
+            shineDelay = Random.Range(3f, 6f);
+            StartCoroutine(startShineCo());
+        }
+        
         setNewPosition();
 
         Targetx = column;
@@ -63,6 +75,7 @@ public class Dot : MonoBehaviour
 
     private void OnMouseDown()
     {
+        anim.SetBool("Touched",true);
         HintManager.instance.destroyHint();
         if (Board.instance.CurrentState == GameState.move)
         {
@@ -72,7 +85,7 @@ public class Dot : MonoBehaviour
     }
 
     private void OnMouseUp()
-    {
+    {   anim.SetBool("Touched",false);
         if (Board.instance.CurrentState == GameState.move)
         {
             finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -81,6 +94,17 @@ public class Dot : MonoBehaviour
         }
     }
 
+    IEnumerator startShineCo()
+    {
+        anim.SetBool("Shine" ,true);
+        yield return null;
+        anim.SetBool("Shine",false);
+    }
+
+    public void popAnimation()
+    {
+        anim.SetBool("Pooped",true);
+    }
     private void calculateAngle()
     {
         if (Mathf.Abs(finalTouchPosition.y - firstTouchPosition.y) > swipeResist ||

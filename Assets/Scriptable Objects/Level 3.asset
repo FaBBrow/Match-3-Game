@@ -17,7 +17,6 @@ MonoBehaviour:
   BoardLayout: []
   Dots:
   - {fileID: 421075326220448667, guid: 6e15c68ea26dc0847b118fd2f08e388e, type: 3}
-  - {fileID: 1101987362061108308, guid: 0cd053c8200444c44a77e3f5adb4aed6, type: 3}
   - {fileID: 5389915196206725285, guid: a051479bcd85e3842811f0c34a4ac08f, type: 3}
   - {fileID: 2290466739317227952, guid: 58675024dea8a924882e7fb52fe32183, type: 3}
   ScoreGoals: 64000000

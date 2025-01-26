@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2070581513330141324}
   - component: {fileID: 5529052456669468913}
   - component: {fileID: 6831778864574019595}
+  - component: {fileID: 278882760995541581}
   m_Layer: 0
   m_Name: Green Dot
   m_TagString: Green Dot
@@ -78,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: -1612733900409905880, guid: 73d3afc78530db543a17de8e2f11cfd4, type: 3}
+  m_Sprite: {fileID: 2024279006, guid: 377fffc7d0355ca49b6e1ea1296101d5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -158,3 +159,25 @@ MonoBehaviour:
   collumnArrow: {fileID: 4021906668098377202, guid: fbe728ba1f0bd944996f59d118fe45b9, type: 3}
   colorBomb: {fileID: 2417620842142871896, guid: 639e5a0e25331f3449f3b3cee298e2ef, type: 3}
   adjacentBomb: {fileID: 7801921407020263870, guid: 27589d72df2285c47ab6f3e4907b85ba, type: 3}
+--- !u!95 &278882760995541581
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2290466739317227952}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7acc9e632d816424a9906b2c8d2cb918, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
