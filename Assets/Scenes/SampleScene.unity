@@ -3491,10 +3491,14 @@ MonoBehaviour:
   Dots: []
   cellGap: {x: 0.1, y: 0.1, z: 0}
   breakableTileObject: {fileID: 8439010489464851604, guid: 393080b8d8b477749aed0f79488b4274, type: 3}
+  lockTilePrefab: {fileID: 7838053367460139398, guid: bb6405cf43d1d8047809670c063f2c0a, type: 3}
   boardDotOffset: {x: 0, y: 0}
   CurrentDot: {fileID: 0}
   basePieceValue: 0
   scoreGoals: 
+  matchType:
+    type: 0
+    color: 
 --- !u!4 &1453736297
 Transform:
   m_ObjectHideFlags: 0

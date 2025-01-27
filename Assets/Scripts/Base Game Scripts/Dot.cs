@@ -35,7 +35,8 @@ public class Dot : MonoBehaviour
     private Vector2 finalTouchPosition=Vector2.zero;
     private Vector2 firstTouchPosition=Vector2.zero;
     private Vector2 tempPosiiton;
-
+    public int boardcolumn;
+    public int boardrow;
     private void Start()
     {
         boardOffsetX = (int)Board.instance.boardDotOffset.x;
@@ -64,7 +65,8 @@ public class Dot : MonoBehaviour
         Targetx = column;
         Targety = row;
 
-
+        boardcolumn = column - boardOffsetX;
+        boardrow = row - boardOffsetY;
         /*" if (isMatched)
          {
              SpriteRenderer mySprite = GetComponent<SpriteRenderer>();
@@ -114,8 +116,9 @@ public class Dot : MonoBehaviour
             swipdeAngel = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y,
                 finalTouchPosition.x - firstTouchPosition.x) * (180 / Mathf.PI);
             Debug.Log(swipdeAngel);
+            Board.instance.CurrentState = GameState.wait;   
             movePieces();
-            Board.instance.CurrentState = GameState.wait;
+           
             Board.instance.CurrentDot = this;
             if (isRowBomb)
                 FindMatches.instance.getRowPieces(row - boardOffsetY);
@@ -124,6 +127,12 @@ public class Dot : MonoBehaviour
             if (isColorBomb) FindMatches.instance.GetColorPieces(otherDot.GetComponent<SpriteRenderer>(), gameObject);
 
             if (isAdjacentBomb) FindMatches.instance.getAdjacentPieces(column - boardOffsetX, row - boardOffsetY);
+
+            
+
+
+
+
         }
         else
         {
@@ -141,30 +150,56 @@ public class Dot : MonoBehaviour
             ? Board.instance.allDots[column - (int)Board.instance.boardDotOffset.x + (int)direction.x,
                 row - (int)Board.instance.boardDotOffset.y + (int)direction.y]
             : null;
-
-        if (otherDot != null)
+        if (Board.instance.lockTiles[boardcolumn, boardrow] == null &&
+            Board.instance.lockTiles[boardcolumn + (int)direction.x, boardrow + (int)direction.y] == null)
         {
-            previousRow = row;
-            previousColumn = column;
-            otherDot.GetComponent<Dot>().column += -1 * (int)direction.x;
-            otherDot.GetComponent<Dot>().row += -1 * (int)direction.y;
-            row += (int)direction.y;
-            column += (int)direction.x;
+
+
+            if (otherDot != null)
+            {
+                Debug.Log("çalışmamalı bu");
+                previousRow = row;
+                previousColumn = column;
+                otherDot.GetComponent<Dot>().column += -1 * (int)direction.x;
+                otherDot.GetComponent<Dot>().row += -1 * (int)direction.y;
+                row += (int)direction.y;
+                column += (int)direction.x;
+                StartCoroutine(CheckMoveCo());
+
+            }
+            else
+            {
+                Board.instance.CurrentState = GameState.move;
+            }
         }
+        else Board.instance.CurrentState = GameState.move;
+
     }
 
     public void movePieces()
     {
         if (swipdeAngel > -45 && swipdeAngel <= 45 && column < Board.instance.width - 1)
+        {
+           
             movePiecesActual(Vector2.right);
+        }
         else if (swipdeAngel > 45 && swipdeAngel <= 135 && row < Board.instance.height - 1)
+        {
+           
             movePiecesActual(Vector2.up);
+        }
         else if ((swipdeAngel > 135 || swipdeAngel <= -135) && column - Board.instance.boardDotOffset.x > 0)
+        {
+            
             movePiecesActual(Vector2.left);
+        }
         else if (swipdeAngel < -45 && swipdeAngel >= -135 && row - Board.instance.boardDotOffset.y > 0)
+        {
+           
             movePiecesActual(Vector2.down);
+        }
 
-        StartCoroutine(CheckMoveCo());
+        
     }
 
     public void setNewPosition()
@@ -229,6 +264,7 @@ public class Dot : MonoBehaviour
         {
             if (!isMatched && !otherDot.GetComponent<Dot>().isMatched)
             {
+                
                 otherDot.GetComponent<Dot>().column = column;
                 otherDot.GetComponent<Dot>().row = row;
                 row = previousRow;

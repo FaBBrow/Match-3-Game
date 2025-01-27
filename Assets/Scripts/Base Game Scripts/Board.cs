@@ -20,7 +20,10 @@ public enum TileKind
 {
     Breakable,
     Blank,
-    Normal
+    Normal,
+    Lock,
+    Concrete,
+    Slime
 }
 [Serializable]
 public class MatchType
@@ -53,6 +56,7 @@ public class Board : MonoBehaviour
     [SerializeField] private List<GameObject> Dots;
     [SerializeField] private Vector3 cellGap;
     [SerializeField] private GameObject breakableTileObject;
+    [SerializeField] private GameObject lockTilePrefab;
     [SerializeField] public Vector2 boardDotOffset;
     public Dot CurrentDot;
     public int basePieceValue = 20;
@@ -62,6 +66,7 @@ public class Board : MonoBehaviour
     [Serialize] public GameObject[,] allDots;
     public bool[,] blankSpaces;
     private BackgroundTile[,] breakableTiles;
+    public BackgroundTile[,] lockTiles;
     private int streakValue = 1;
 
     public Board(int height, int width)
@@ -97,6 +102,7 @@ public class Board : MonoBehaviour
             }
 
         breakableTiles = new BackgroundTile[width, height];
+        lockTiles = new BackgroundTile[width, height];
         blankSpaces = new bool[width, height];
         allDots = new GameObject[width, height];
         setup();
@@ -123,6 +129,18 @@ public class Board : MonoBehaviour
             }
     }
 
+    public void generateLockTiles()
+    {
+        for (var i = 0; i < boardLayout.Length; i++)
+            if (boardLayout[i].TileKind == TileKind.Lock)
+            {
+                var tempPosition = new Vector2(boardLayout[i].x - width / 2, boardLayout[i].y - height / 2);
+                Debug.Log("yarattı");
+                var tile = Instantiate(lockTilePrefab, tempPosition, quaternion.identity);
+                lockTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+            }
+    }
+
     public void generateBreakableTiles()
     {
         for (var i = 0; i < boardLayout.Length; i++)
@@ -139,6 +157,7 @@ public class Board : MonoBehaviour
     {
         generateBlankSpaces();
         generateBreakableTiles();
+        generateLockTiles();
         for (var i = 0; i < width; i++)
         for (var j = 0; j < height; j++)
             if (!blankSpaces[i, j])
@@ -299,6 +318,11 @@ public class Board : MonoBehaviour
             {
                 breakableTiles[column, row].takeDamage(1);
                 if (breakableTiles[column, row].hitPoints <= 0) breakableTiles[column, row] = null;
+            }
+            if (lockTiles[column, row] != null)
+            {
+                lockTiles[column, row].takeDamage(1);
+                if (lockTiles[column, row].hitPoints <= 0) lockTiles[column, row] = null;
             }
 
             FindMatches.instance.CurrentMatches.Remove(allDots[column, row]);

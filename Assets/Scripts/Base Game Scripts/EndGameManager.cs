@@ -94,6 +94,8 @@ public class EndGameManager : MonoBehaviour
         Board.instance.CurrentState = GameState.win;
         currentCounterValue = 0;
         counter.text = "" + currentCounterValue;
+
+       
         FadePanelController.instance.GameOver();
     }
 

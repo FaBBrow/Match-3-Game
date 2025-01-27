@@ -19,11 +19,19 @@ public class BackToSplash : MonoBehaviour
     {
         GameData.gameData.saveData.isActive[Board.instance.level+1] = true;
         GameData.gameData.Save();
+        for (int i = 0; i < GoalManager.instance.levelGoals.Length; i++)
+        {
+            GoalManager.instance.levelGoals[i].numberCollected = 0;
+        }
         SceneManager.LoadScene(SceneToLoad);
     }
 
     public void LoseOk()
     {
+        for (int i = 0; i < GoalManager.instance.levelGoals.Length; i++)
+        {
+            GoalManager.instance.levelGoals[i].numberCollected = 0;
+        }
         SceneManager.LoadScene(SceneToLoad);
     }
 }
