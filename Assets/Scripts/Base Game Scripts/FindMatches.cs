@@ -20,8 +20,9 @@ public class FindMatches : MonoBehaviour
 
     private IEnumerator FindAllMatchesCo()
     {
-        yield return new WaitForSeconds(0.2f);
-        for (var i = 0; i < Board.instance.width; i++)
+       // yield return new WaitForSeconds(0.2f);
+       yield return null;
+       for (var i = 0; i < Board.instance.width; i++)
         for (var j = 0; j < Board.instance.height; j++)
         {
             var currentDot = Board.instance.allDots[i, j] != null
@@ -131,7 +132,7 @@ public class FindMatches : MonoBehaviour
         CurrentMatches.Clear();
     }
 
-    public void checkBombs()
+    public void checkBombs(MatchType matchType)
     {
         var currentdot = Board.instance.CurrentDot != null ? Board.instance.CurrentDot.GetComponent<Dot>() : null;
         var otherDot = Board.instance.CurrentDot != null && Board.instance.CurrentDot.otherDot != null
@@ -140,7 +141,7 @@ public class FindMatches : MonoBehaviour
 
         if (currentdot != null)
         {
-            if (currentdot.isMatched)
+            if (currentdot.isMatched&& currentdot.tag==matchType.color)
             {
                 currentdot.isMatched = false;
 
@@ -152,7 +153,7 @@ public class FindMatches : MonoBehaviour
             }
             else if (otherDot != null)
             {
-                if (otherDot.isMatched)
+                if (otherDot.isMatched&& otherDot.tag==matchType.color)
                 {
                     otherDot.isMatched = false;
 
@@ -174,23 +175,19 @@ public class FindMatches : MonoBehaviour
             ? Board.instance.CurrentDot.otherDot.GetComponent<Dot>()
             : null;
 
-        if (currentdot != null)
+        if (currentdot != null && currentdot.isMatched && currentdot.tag == Board.instance.matchType.color)
         {
-            if (currentdot.isMatched)
-            {
-                currentdot.isMatched = false;
-                currentdot.makeColorBomb();
-            }
-            else if (otherDot != null)
-            {
-                if (otherDot.isMatched)
-                {
-                    otherDot.isMatched = false;
 
-                    otherDot.makeColorBomb();
-                }
-            }
+            currentdot.isMatched = false;
+            currentdot.makeColorBomb();
         }
+        else if (otherDot != null)
+        {
+            if (otherDot.isMatched&& otherDot.tag==Board.instance.matchType.color) {
+                otherDot.isMatched = false;
+                otherDot.makeColorBomb(); }
+        }
+       
     }
 
     public void checkAdjacentBomb()
@@ -200,23 +197,21 @@ public class FindMatches : MonoBehaviour
             ? Board.instance.CurrentDot.otherDot.GetComponent<Dot>()
             : null;
 
-        if (currentdot != null)
+        if (currentdot != null && currentdot.isMatched && currentdot.tag == Board.instance.matchType.color)
         {
-            if (currentdot.isMatched)
-            {
-                currentdot.isMatched = false;
-                currentdot.makeAdjacentBomb();
-            }
-            else if (otherDot != null)
-            {
-                if (otherDot.isMatched)
-                {
-                    otherDot.isMatched = false;
 
-                    otherDot.makeAdjacentBomb();
-                }
+            currentdot.isMatched = false;
+            currentdot.makeAdjacentBomb();
+        }
+        else if (otherDot != null)
+        {
+            if (otherDot.isMatched&& otherDot.tag==Board.instance.matchType.color)
+            {
+                otherDot.isMatched = false;
+                otherDot.makeAdjacentBomb();
             }
         }
+        
     }
 
     public void getAdjacentPieces(int column, int row)

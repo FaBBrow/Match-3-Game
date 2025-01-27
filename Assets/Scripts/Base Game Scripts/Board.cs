@@ -22,7 +22,12 @@ public enum TileKind
     Blank,
     Normal
 }
-
+[Serializable]
+public class MatchType
+{
+    public int type;
+    public string color;
+}
 [Serializable]
 public class TileType
 {
@@ -52,6 +57,7 @@ public class Board : MonoBehaviour
     public Dot CurrentDot;
     public int basePieceValue = 20;
     public int[] scoreGoals;
+    public MatchType matchType;
 
     [Serialize] public GameObject[,] allDots;
     public bool[,] blankSpaces;
@@ -200,12 +206,15 @@ public class Board : MonoBehaviour
         return false;
     }
 
-    private int columnOrRow()
+    private MatchType columnOrRow()
     {
         List<GameObject> matchCopy = FindMatches.instance.CurrentMatches as List<GameObject>;
+        matchType.type = 0;
+        matchType.color = "";
         for (int i = 0; i < matchCopy.Count; i++)
         {
             Dot thisdot = matchCopy[i].GetComponent<Dot>();
+            string color = matchCopy[i].tag;
             int column = thisdot.column;
             int row = thisdot.row;
             int columnMatch = 0;
@@ -218,12 +227,12 @@ public class Board : MonoBehaviour
                     continue;
                 }
 
-                if (nextdot.column==thisdot.column&& nextdot.CompareTag(thisdot.tag))
+                if (nextdot.column==thisdot.column&& nextdot.tag==color)
                 {
                     columnMatch++;
                 }
 
-                if (nextdot.row==thisdot.row && nextdot.CompareTag(thisdot.tag))
+                if (nextdot.row==thisdot.row && nextdot.tag==color)
                 {
                     rowMatch++;
                 }
@@ -231,20 +240,30 @@ public class Board : MonoBehaviour
 
             if (columnMatch==4|| rowMatch==4)
             {
-                return 1;
+                matchType.type = 1;
+                matchType.color = color;
+                return matchType;
             }
 
-            if (columnMatch==2&& rowMatch==2)
+            else if (columnMatch==2&& rowMatch==2)
             {
-                return 2;
+                matchType.type = 2;
+                matchType.color = color;
+                return matchType;
             }
 
-            if (columnMatch==3|| rowMatch==3)
+            else  if (columnMatch==3|| rowMatch==3)
             {
-                return 3;
+                matchType.type = 3;
+                matchType.color = color;
+                return matchType;
             }
+           
         }
-        return 0;
+        matchType.type = 1;
+        matchType.color = "";
+        return matchType;
+        
         //     var numberHorizontal = 0;
         //     var numberVertical = 0;
         //     var firstPiece = FindMatches.instance.CurrentMatches[0].GetComponent<Dot>();
@@ -262,22 +281,7 @@ public class Board : MonoBehaviour
 
     public void DestroyMatchesAt(int column, int row)
     {
-        if (FindMatches.instance.CurrentMatches.Count > 3)
-        {
-            int typeOfMatch = columnOrRow();
-            if (typeOfMatch==1)
-            {
-                FindMatches.instance.checkColorBombs();
-            }
-            else if (typeOfMatch==2)
-            {
-                FindMatches.instance.checkAdjacentBomb();
-            }
-            else if (typeOfMatch==3)
-            {
-             FindMatches.instance.checkBombs();   
-            }
-        }
+       
 
         if (allDots[column, row].GetComponent<Dot>().isMatched)
         {
@@ -315,6 +319,23 @@ public class Board : MonoBehaviour
 
     public void DestroyMatches()
     {
+        if (FindMatches.instance.CurrentMatches.Count > 3)
+        {
+            MatchType typeOfMatch = columnOrRow();
+            if (typeOfMatch.type==1)
+            {
+                FindMatches.instance.checkColorBombs();
+            }
+            else if (typeOfMatch.type==2)
+            {
+                FindMatches.instance.checkAdjacentBomb();
+            }
+            else if (typeOfMatch.type==3)
+            {
+                FindMatches.instance.checkBombs(typeOfMatch);   
+            }
+        }
+        FindMatches.instance.CurrentMatches.Clear();
         for (var i = 0; i < width; i++)
         for (var j = 0; j < height; j++)
             if (allDots[i, j] != null)
@@ -368,6 +389,7 @@ public class Board : MonoBehaviour
 
     private bool MatchesOnBoard()
     {
+        FindMatches.instance.findAllMatches();
         for (var i = 0; i < width; i++)
         for (var j = 0; j < height; j++)
             if (allDots[i, j] != null)
@@ -386,10 +408,11 @@ public class Board : MonoBehaviour
         {
             streakValue++;
             DestroyMatches();
-            yield return new WaitForSeconds(0.5f);
+           yield break;
+            // yield return new WaitForSeconds(0.5f);
         }
 
-        FindMatches.instance.CurrentMatches.Clear();
+       
         CurrentDot = null;
         yield return new WaitForSeconds(0.5f);
         if (isDeadLock()) StartCoroutine(shuffleBoard());

@@ -32,8 +32,8 @@ public class Dot : MonoBehaviour
     [SerializeField] private GameObject collumnArrow;
     [SerializeField] private GameObject colorBomb;
     [SerializeField] private GameObject adjacentBomb;
-    private Vector2 finalTouchPosition;
-    private Vector2 firstTouchPosition;
+    private Vector2 finalTouchPosition=Vector2.zero;
+    private Vector2 firstTouchPosition=Vector2.zero;
     private Vector2 tempPosiiton;
 
     private void Start()
@@ -75,8 +75,9 @@ public class Dot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        anim.SetBool("Touched",true);
+       
         HintManager.instance.destroyHint();
+        
         if (Board.instance.CurrentState == GameState.move)
         {
             firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -85,7 +86,7 @@ public class Dot : MonoBehaviour
     }
 
     private void OnMouseUp()
-    {   anim.SetBool("Touched",false);
+    {   
         if (Board.instance.CurrentState == GameState.move)
         {
             finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -176,8 +177,12 @@ public class Dot : MonoBehaviour
             transform.DOMove(tempPosiiton, 1);
 
             if (Board.instance.allDots[column - boardOffsetX, row - boardOffsetY] != gameObject)
+            {
                 Board.instance.allDots[column - boardOffsetX, row - boardOffsetY] = gameObject;
-            FindMatches.instance.findAllMatches();
+                FindMatches.instance.findAllMatches();
+            }
+                
+            
         }
 
         else
@@ -195,8 +200,11 @@ public class Dot : MonoBehaviour
 
             transform.DOMove(tempPosiiton, 1);
             if (Board.instance.allDots[column - boardOffsetX, row - boardOffsetY] != gameObject)
+            {
                 Board.instance.allDots[column - boardOffsetX, row - boardOffsetY] = gameObject;
-            FindMatches.instance.findAllMatches();
+                FindMatches.instance.findAllMatches();
+                
+            }
         }
         else
         {
