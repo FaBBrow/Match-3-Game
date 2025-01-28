@@ -121,8 +121,17 @@ public class Dot : MonoBehaviour
            
             Board.instance.CurrentDot = this;
             if (isRowBomb)
+            {
                 FindMatches.instance.getRowPieces(row - boardOffsetY);
-            else if (isCollumnBomb) FindMatches.instance.getColumnPieces(column - boardOffsetX);
+                
+                Board.instance.bombRow(row-boardOffsetY);
+            }
+            else if (isCollumnBomb)
+            {
+                
+                FindMatches.instance.getColumnPieces(column - boardOffsetX);
+                Board.instance.bombColumn(column-boardOffsetX);
+            }
 
             if (isColorBomb) FindMatches.instance.GetColorPieces(otherDot.GetComponent<SpriteRenderer>(), gameObject);
 

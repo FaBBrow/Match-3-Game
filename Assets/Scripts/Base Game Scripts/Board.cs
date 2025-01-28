@@ -57,6 +57,7 @@ public class Board : MonoBehaviour
     [SerializeField] private Vector3 cellGap;
     [SerializeField] private GameObject breakableTileObject;
     [SerializeField] private GameObject lockTilePrefab;
+    [SerializeField] private GameObject concreteTilePrefab;
     [SerializeField] public Vector2 boardDotOffset;
     public Dot CurrentDot;
     public int basePieceValue = 20;
@@ -67,6 +68,7 @@ public class Board : MonoBehaviour
     public bool[,] blankSpaces;
     private BackgroundTile[,] breakableTiles;
     public BackgroundTile[,] lockTiles;
+    public BackgroundTile[,] concreteTiles;
     private int streakValue = 1;
 
     public Board(int height, int width)
@@ -104,6 +106,7 @@ public class Board : MonoBehaviour
         breakableTiles = new BackgroundTile[width, height];
         lockTiles = new BackgroundTile[width, height];
         blankSpaces = new bool[width, height];
+        concreteTiles = new BackgroundTile[width, height];
         allDots = new GameObject[width, height];
         setup();
     }
@@ -140,6 +143,17 @@ public class Board : MonoBehaviour
                 lockTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
             }
     }
+    public void generateConcreteTiles()
+    {
+        for (var i = 0; i < boardLayout.Length; i++)
+            if (boardLayout[i].TileKind == TileKind.Concrete)
+            {
+                var tempPosition = new Vector2(boardLayout[i].x - width / 2, boardLayout[i].y - height / 2);
+                Debug.Log("yarattı");
+                var tile = Instantiate(concreteTilePrefab, tempPosition, quaternion.identity);
+                concreteTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+            }
+    }
 
     public void generateBreakableTiles()
     {
@@ -158,9 +172,10 @@ public class Board : MonoBehaviour
         generateBlankSpaces();
         generateBreakableTiles();
         generateLockTiles();
+        generateConcreteTiles();
         for (var i = 0; i < width; i++)
         for (var j = 0; j < height; j++)
-            if (!blankSpaces[i, j])
+            if (!blankSpaces[i, j]&& !concreteTiles[i,j])
             {
                 var startPosition = new Vector2(i - width / 2, j - height / 2 + offset);
                 var tempPosition = new Vector2(i - width / 2, j - height / 2);
@@ -324,7 +339,7 @@ public class Board : MonoBehaviour
                 lockTiles[column, row].takeDamage(1);
                 if (lockTiles[column, row].hitPoints <= 0) lockTiles[column, row] = null;
             }
-
+            damageConcrete(column,row);
             FindMatches.instance.CurrentMatches.Remove(allDots[column, row]);
             var dotPosition = new Vector2(Mathf.Round(allDots[column, row].transform.position.x),
                 Mathf.Round(allDots[column, row].transform.position.y));
@@ -368,12 +383,102 @@ public class Board : MonoBehaviour
         StartCoroutine(DecreaseRowCo2());
     }
 
+    public void bombRow(int row)
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (concreteTiles[i,j])
+                {
+                    concreteTiles[i,row].takeDamage(1);
+                    if (concreteTiles[i,row].hitPoints<=0)
+                    {
+                        concreteTiles[i, row] = null;
+                    }
+                }
+            }
+        }
+    }
+    public void bombColumn(int column)
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (concreteTiles[i,j])
+                {
+                    concreteTiles[column,j].takeDamage(1);
+                    if (concreteTiles[column,j].hitPoints<=0)
+                    {
+                        concreteTiles[column, j] = null;
+                    }
+                }
+            }
+        }
+    }
+
+    public void damageConcrete(int column,int row)
+    {
+        if (column>0)
+        {
+            if (concreteTiles[column-1,row])
+            {
+                concreteTiles[column-1,row].takeDamage(1);
+                if (concreteTiles[column-1,row].hitPoints<=0)
+                {
+                    concreteTiles[column - 1, row] = null;
+                }
+
+                
+            }   
+        }
+        if (column<width-1)
+        {
+            if (concreteTiles[column+1,row])
+            {
+                concreteTiles[column+1,row].takeDamage(1);
+                if (concreteTiles[column+1,row].hitPoints<=0)
+                {
+                    concreteTiles[column + 1, row] = null;
+                }
+
+                
+            }   
+        }
+        if (row>0)
+        {
+            if (concreteTiles[column,row-1])
+            {
+                concreteTiles[column,row-1].takeDamage(1);
+                if (concreteTiles[column,row-1].hitPoints<=0)
+                {
+                    concreteTiles[column, row-1] = null;
+                }
+
+                
+            }   
+        }
+        if (row<height-1)
+        {
+            if (concreteTiles[column,row+1])
+            {
+                concreteTiles[column,row+1].takeDamage(1);
+                if (concreteTiles[column,row+1].hitPoints<=0)
+                {
+                    concreteTiles[column, row+1] = null;
+                }
+
+                
+            }   
+        }
+    }
 
     private IEnumerator DecreaseRowCo2()
     {
         for (var i = 0; i < width; i++)
         for (var j = 0; j < height; j++)
-            if (!blankSpaces[i, j] && allDots[i, j] == null)
+            if (!blankSpaces[i, j] && allDots[i, j] == null&& !concreteTiles[i,j])
                 for (var k = j + 1; k < height; k++)
                     if (allDots[i, k] != null)
                     {
@@ -391,7 +496,7 @@ public class Board : MonoBehaviour
     {
         for (var i = 0; i < width; i++)
         for (var j = 0; j < height; j++)
-            if (allDots[i, j] == null && !blankSpaces[i, j])
+            if (allDots[i, j] == null && !blankSpaces[i, j]&& !concreteTiles[i,j])
             {
                 var tempPosition = new Vector2(i - width / 2, j - height / 2 + offset);
                 var dotToUse = Random.Range(0, Dots.Count);
@@ -446,9 +551,12 @@ public class Board : MonoBehaviour
 
     public void switchPieces(int column, int row, Vector2 direction)
     {
-        var holder = allDots[column + (int)direction.x, row + (int)direction.y];
-        allDots[column + (int)direction.x, row + (int)direction.y] = allDots[column, row];
-        allDots[column, row] = holder;
+        if (allDots[column+(int)direction.x,row+(int)direction.y]!=null)
+        { 
+            var holder = allDots[column + (int)direction.x, row + (int)direction.y]; 
+            allDots[column + (int)direction.x, row + (int)direction.y] = allDots[column, row]; 
+            allDots[column, row] = holder; 
+        }
     }
 
     private bool checkForMatches()
@@ -515,7 +623,7 @@ public class Board : MonoBehaviour
 
         for (var i = 0; i < width; i++)
         for (var j = 0; j < height; j++)
-            if (!blankSpaces[i, j])
+            if (!blankSpaces[i, j]&& concreteTiles[i,j])
             {
                 var pieceToUse = Random.Range(0, newBoard.Count);
 

@@ -16,6 +16,8 @@ TagManager:
   - color
   - breakable
   - Gray Dot
+  - Concrete
+  - Lock
   layers:
   - Default
   - TransparentFX
