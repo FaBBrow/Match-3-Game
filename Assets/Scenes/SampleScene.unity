@@ -3493,6 +3493,7 @@ MonoBehaviour:
   breakableTileObject: {fileID: 8439010489464851604, guid: 393080b8d8b477749aed0f79488b4274, type: 3}
   lockTilePrefab: {fileID: 7838053367460139398, guid: bb6405cf43d1d8047809670c063f2c0a, type: 3}
   concreteTilePrefab: {fileID: 255600798690311252, guid: 6156f4411c83a104e9f2a6d5bae19e64, type: 3}
+  slimeTilePrefab: {fileID: 3860777460225444908, guid: 3c93e6fb62080d74e87b5e568d6adb32, type: 3}
   boardDotOffset: {x: 0, y: 0}
   CurrentDot: {fileID: 0}
   basePieceValue: 0

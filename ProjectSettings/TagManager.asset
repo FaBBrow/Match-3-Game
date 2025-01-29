@@ -18,6 +18,7 @@ TagManager:
   - Gray Dot
   - Concrete
   - Lock
+  - Slime
   layers:
   - Default
   - TransparentFX

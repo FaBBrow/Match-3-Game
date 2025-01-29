@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &50644336485488877
+--- !u!1 &3860777460225444908
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8314540293980202471}
-  - component: {fileID: 5374657383130692326}
-  - component: {fileID: 7014921597852130957}
-  - component: {fileID: -1147035125485822338}
-  - component: {fileID: 4340878405534602148}
+  - component: {fileID: 6818232274682484688}
+  - component: {fileID: 930258788699533101}
+  - component: {fileID: 3348287841832575748}
+  - component: {fileID: 1231939296882186442}
   m_Layer: 0
-  m_Name: Red Dot
-  m_TagString: Red Dot
+  m_Name: Slime Tile
+  m_TagString: Slime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8314540293980202471
+--- !u!4 &6818232274682484688
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 50644336485488877}
+  m_GameObject: {fileID: 3860777460225444908}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.3158524, y: 4.971, z: 0}
+  m_LocalPosition: {x: 5.015332, y: -1.1108661, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &5374657383130692326
+--- !u!212 &930258788699533101
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 50644336485488877}
+  m_GameObject: {fileID: 3860777460225444908}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -78,8 +77,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
-  m_Sprite: {fileID: 1752824325, guid: 377fffc7d0355ca49b6e1ea1296101d5, type: 3}
+  m_SortingOrder: 20
+  m_Sprite: {fileID: -7282886668606283007, guid: e644516e4c4a2e140b02baa249bba015, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -90,88 +89,30 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &7014921597852130957
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 50644336485488877}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
---- !u!114 &-1147035125485822338
+--- !u!114 &3348287841832575748
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 50644336485488877}
+  m_GameObject: {fileID: 3860777460225444908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58d62f4a88c96b040b7ff6b14a9bf485, type: 3}
+  m_Script: {fileID: 11500000, guid: 470f773d690a32f468a3ef0ca7ea14d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Targetx: 0
-  Targety: 0
-  previousColumn: 0
-  previousRow: 0
-  boardOffsetX: 0
-  boardOffsetY: 0
-  column: 0
-  row: 0
-  isMatched: 0
-  slideing: 0
-  otherDot: {fileID: 0}
-  swipdeAngel: 0
-  swipeResist: 1
-  isColorBomb: 0
-  isCollumnBomb: 0
-  isRowBomb: 0
-  isAdjacentBomb: 0
-  rowArrow: {fileID: 586642022238393575, guid: 791ef988f91419349be32c196c033ba1, type: 3}
-  collumnArrow: {fileID: 4021906668098377202, guid: fbe728ba1f0bd944996f59d118fe45b9, type: 3}
-  colorBomb: {fileID: 2417620842142871896, guid: 639e5a0e25331f3449f3b3cee298e2ef, type: 3}
-  adjacentBomb: {fileID: 7801921407020263870, guid: 27589d72df2285c47ab6f3e4907b85ba, type: 3}
-  boardcolumn: 0
-  boardrow: 0
---- !u!95 &4340878405534602148
+  hitPoints: 1
+--- !u!95 &1231939296882186442
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 50644336485488877}
+  m_GameObject: {fileID: 3860777460225444908}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9ce41f6d8f90b454988437f4e0610140, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5256ae233778adc4882d03d0fed4e7f9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

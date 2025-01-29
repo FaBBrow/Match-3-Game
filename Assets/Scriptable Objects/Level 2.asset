@@ -17,7 +17,7 @@ MonoBehaviour:
   BoardLayout:
   - x: 5
     y: 5
-    TileKind: 4
+    TileKind: 5
   Dots:
   - {fileID: 6614016484404303261, guid: 8a20d5271162d6e4c9cd7e7530e8348d, type: 3}
   - {fileID: 2290466739317227952, guid: 58675024dea8a924882e7fb52fe32183, type: 3}
